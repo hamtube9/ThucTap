@@ -39,9 +39,9 @@ public class ListUserActivity extends AppCompatActivity {
           @Override
           public void onResponse(Call<List<User>> call, Response<List<User>> response) {
             if (response.isSuccessful()){
-                adapter.updateData(response.body());
-                String data = response.body().toString();
-                Log.e("data", data);
+
+                Log.e("data", response.body().toString());
+             //   adapter.updateData(response.body());
 
             }
           }

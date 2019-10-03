@@ -11,10 +11,10 @@ public class Datum {
     private String hoVaTen;
     @SerializedName("maCoCauToChuc")
     @Expose
-    private String maCoCauToChuc;
+    private Object maCoCauToChuc;
     @SerializedName("tenCoCauToChuc")
     @Expose
-    private String tenCoCauToChuc;
+    private Object tenCoCauToChuc;
     @SerializedName("diaChi")
     @Expose
     private String diaChi;
@@ -29,28 +29,31 @@ public class Datum {
     private String tenQuocGia;
     @SerializedName("maXa")
     @Expose
-    private String maXa;
+    private Object maXa;
     @SerializedName("nguoiThan_MaXa")
     @Expose
-    private String nguoiThanMaXa;
+    private Object nguoiThanMaXa;
     @SerializedName("maNguoiBaoLanh")
     @Expose
-    private String maNguoiBaoLanh;
+    private Object maNguoiBaoLanh;
     @SerializedName("chon")
     @Expose
     private Boolean chon;
     @SerializedName("phanLoai")
     @Expose
-    private String phanLoai;
+    private Object phanLoai;
     @SerializedName("tenGioiTinh")
     @Expose
-    private String tenGioiTinh;
+    private Object tenGioiTinh;
+    @SerializedName("anh")
+    @Expose
+    private Object anh;
     @SerializedName("id")
     @Expose
     private Integer id;
     @SerializedName("anhDaiDien")
     @Expose
-    private String anhDaiDien;
+    private Object anhDaiDien;
     @SerializedName("ma")
     @Expose
     private String ma;
@@ -65,7 +68,7 @@ public class Datum {
     private String ten;
     @SerializedName("phapDanh")
     @Expose
-    private String phapDanh;
+    private Object phapDanh;
     @SerializedName("gioiTinh")
     @Expose
     private Integer gioiTinh;
@@ -77,7 +80,7 @@ public class Datum {
     private String soDienThoai;
     @SerializedName("soNha")
     @Expose
-    private String soNha;
+    private Object soNha;
     @SerializedName("idXa")
     @Expose
     private Integer idXa;
@@ -92,16 +95,16 @@ public class Datum {
     private String email;
     @SerializedName("ngheNghiep")
     @Expose
-    private String ngheNghiep;
+    private Object ngheNghiep;
     @SerializedName("nguoiThan_HoVaTen")
     @Expose
-    private String nguoiThanHoVaTen;
+    private Object nguoiThanHoVaTen;
     @SerializedName("nguoiThan_SoDienThoai")
     @Expose
-    private String nguoiThanSoDienThoai;
+    private Object nguoiThanSoDienThoai;
     @SerializedName("nguoiThan_SoNha")
     @Expose
-    private String nguoiThanSoNha;
+    private Object nguoiThanSoNha;
     @SerializedName("nguoiThan_IDXa")
     @Expose
     private Integer nguoiThanIDXa;
@@ -113,7 +116,7 @@ public class Datum {
     private Integer nguoiThanIDTinh;
     @SerializedName("ghiChu")
     @Expose
-    private String ghiChu;
+    private Object ghiChu;
     @SerializedName("idDonVi")
     @Expose
     private Integer idDonVi;
@@ -131,7 +134,7 @@ public class Datum {
     private Integer editedBy;
     @SerializedName("editedOn")
     @Expose
-    private String editedOn;
+    private Object editedOn;
     @SerializedName("idNguoiBaoLanh")
     @Expose
     private Integer idNguoiBaoLanh;
@@ -158,10 +161,16 @@ public class Datum {
     private Integer namSinh;
     @SerializedName("ngayVaoChua")
     @Expose
-    private String ngayVaoChua;
+    private Object ngayVaoChua;
     @SerializedName("namVaoChua")
     @Expose
-    private Integer namVaoChua;
+    private Object namVaoChua;
+    @SerializedName("isChuyenThanhTangNi")
+    @Expose
+    private Object isChuyenThanhTangNi;
+    @SerializedName("thoiDiemChuyenTangNi")
+    @Expose
+    private Object thoiDiemChuyenTangNi;
 
     public String getHoVaTen() {
         return hoVaTen;
@@ -171,19 +180,19 @@ public class Datum {
         this.hoVaTen = hoVaTen;
     }
 
-    public String getMaCoCauToChuc() {
+    public Object getMaCoCauToChuc() {
         return maCoCauToChuc;
     }
 
-    public void setMaCoCauToChuc(String maCoCauToChuc) {
+    public void setMaCoCauToChuc(Object maCoCauToChuc) {
         this.maCoCauToChuc = maCoCauToChuc;
     }
 
-    public String getTenCoCauToChuc() {
+    public Object getTenCoCauToChuc() {
         return tenCoCauToChuc;
     }
 
-    public void setTenCoCauToChuc(String tenCoCauToChuc) {
+    public void setTenCoCauToChuc(Object tenCoCauToChuc) {
         this.tenCoCauToChuc = tenCoCauToChuc;
     }
 
@@ -219,27 +228,27 @@ public class Datum {
         this.tenQuocGia = tenQuocGia;
     }
 
-    public String getMaXa() {
+    public Object getMaXa() {
         return maXa;
     }
 
-    public void setMaXa(String maXa) {
+    public void setMaXa(Object maXa) {
         this.maXa = maXa;
     }
 
-    public String getNguoiThanMaXa() {
+    public Object getNguoiThanMaXa() {
         return nguoiThanMaXa;
     }
 
-    public void setNguoiThanMaXa(String nguoiThanMaXa) {
+    public void setNguoiThanMaXa(Object nguoiThanMaXa) {
         this.nguoiThanMaXa = nguoiThanMaXa;
     }
 
-    public String getMaNguoiBaoLanh() {
+    public Object getMaNguoiBaoLanh() {
         return maNguoiBaoLanh;
     }
 
-    public void setMaNguoiBaoLanh(String maNguoiBaoLanh) {
+    public void setMaNguoiBaoLanh(Object maNguoiBaoLanh) {
         this.maNguoiBaoLanh = maNguoiBaoLanh;
     }
 
@@ -251,20 +260,28 @@ public class Datum {
         this.chon = chon;
     }
 
-    public String getPhanLoai() {
+    public Object getPhanLoai() {
         return phanLoai;
     }
 
-    public void setPhanLoai(String phanLoai) {
+    public void setPhanLoai(Object phanLoai) {
         this.phanLoai = phanLoai;
     }
 
-    public String getTenGioiTinh() {
+    public Object getTenGioiTinh() {
         return tenGioiTinh;
     }
 
-    public void setTenGioiTinh(String tenGioiTinh) {
+    public void setTenGioiTinh(Object tenGioiTinh) {
         this.tenGioiTinh = tenGioiTinh;
+    }
+
+    public Object getAnh() {
+        return anh;
+    }
+
+    public void setAnh(Object anh) {
+        this.anh = anh;
     }
 
     public Integer getId() {
@@ -275,11 +292,11 @@ public class Datum {
         this.id = id;
     }
 
-    public String getAnhDaiDien() {
+    public Object getAnhDaiDien() {
         return anhDaiDien;
     }
 
-    public void setAnhDaiDien(String anhDaiDien) {
+    public void setAnhDaiDien(Object anhDaiDien) {
         this.anhDaiDien = anhDaiDien;
     }
 
@@ -315,11 +332,11 @@ public class Datum {
         this.ten = ten;
     }
 
-    public String getPhapDanh() {
+    public Object getPhapDanh() {
         return phapDanh;
     }
 
-    public void setPhapDanh(String phapDanh) {
+    public void setPhapDanh(Object phapDanh) {
         this.phapDanh = phapDanh;
     }
 
@@ -347,11 +364,11 @@ public class Datum {
         this.soDienThoai = soDienThoai;
     }
 
-    public String getSoNha() {
+    public Object getSoNha() {
         return soNha;
     }
 
-    public void setSoNha(String soNha) {
+    public void setSoNha(Object soNha) {
         this.soNha = soNha;
     }
 
@@ -387,35 +404,35 @@ public class Datum {
         this.email = email;
     }
 
-    public String getNgheNghiep() {
+    public Object getNgheNghiep() {
         return ngheNghiep;
     }
 
-    public void setNgheNghiep(String ngheNghiep) {
+    public void setNgheNghiep(Object ngheNghiep) {
         this.ngheNghiep = ngheNghiep;
     }
 
-    public String getNguoiThanHoVaTen() {
+    public Object getNguoiThanHoVaTen() {
         return nguoiThanHoVaTen;
     }
 
-    public void setNguoiThanHoVaTen(String nguoiThanHoVaTen) {
+    public void setNguoiThanHoVaTen(Object nguoiThanHoVaTen) {
         this.nguoiThanHoVaTen = nguoiThanHoVaTen;
     }
 
-    public String getNguoiThanSoDienThoai() {
+    public Object getNguoiThanSoDienThoai() {
         return nguoiThanSoDienThoai;
     }
 
-    public void setNguoiThanSoDienThoai(String nguoiThanSoDienThoai) {
+    public void setNguoiThanSoDienThoai(Object nguoiThanSoDienThoai) {
         this.nguoiThanSoDienThoai = nguoiThanSoDienThoai;
     }
 
-    public String getNguoiThanSoNha() {
+    public Object getNguoiThanSoNha() {
         return nguoiThanSoNha;
     }
 
-    public void setNguoiThanSoNha(String nguoiThanSoNha) {
+    public void setNguoiThanSoNha(Object nguoiThanSoNha) {
         this.nguoiThanSoNha = nguoiThanSoNha;
     }
 
@@ -443,11 +460,11 @@ public class Datum {
         this.nguoiThanIDTinh = nguoiThanIDTinh;
     }
 
-    public String getGhiChu() {
+    public Object getGhiChu() {
         return ghiChu;
     }
 
-    public void setGhiChu(String ghiChu) {
+    public void setGhiChu(Object ghiChu) {
         this.ghiChu = ghiChu;
     }
 
@@ -491,11 +508,11 @@ public class Datum {
         this.editedBy = editedBy;
     }
 
-    public String getEditedOn() {
+    public Object getEditedOn() {
         return editedOn;
     }
 
-    public void setEditedOn(String editedOn) {
+    public void setEditedOn(Object editedOn) {
         this.editedOn = editedOn;
     }
 
@@ -563,20 +580,36 @@ public class Datum {
         this.namSinh = namSinh;
     }
 
-    public String getNgayVaoChua() {
+    public Object getNgayVaoChua() {
         return ngayVaoChua;
     }
 
-    public void setNgayVaoChua(String ngayVaoChua) {
+    public void setNgayVaoChua(Object ngayVaoChua) {
         this.ngayVaoChua = ngayVaoChua;
     }
 
-    public Integer getNamVaoChua() {
+    public Object getNamVaoChua() {
         return namVaoChua;
     }
 
-    public void setNamVaoChua(Integer namVaoChua) {
+    public void setNamVaoChua(Object namVaoChua) {
         this.namVaoChua = namVaoChua;
+    }
+
+    public Object getIsChuyenThanhTangNi() {
+        return isChuyenThanhTangNi;
+    }
+
+    public void setIsChuyenThanhTangNi(Object isChuyenThanhTangNi) {
+        this.isChuyenThanhTangNi = isChuyenThanhTangNi;
+    }
+
+    public Object getThoiDiemChuyenTangNi() {
+        return thoiDiemChuyenTangNi;
+    }
+
+    public void setThoiDiemChuyenTangNi(Object thoiDiemChuyenTangNi) {
+        this.thoiDiemChuyenTangNi = thoiDiemChuyenTangNi;
     }
 
 }

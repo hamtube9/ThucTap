@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtUserName, edtPassword;
-    private Button btnLogin;
+    private Button btnLogin,btnGotoRegister;
     private ImageView btnshow;
     boolean check;
     private CheckBox checkBox;
@@ -29,12 +29,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
-        restoringPreferences();
         showPassword();
+
+//        Intent intent=getIntent();
+//        check = intent.getExtras().getBoolean("checked");
+//        if (check==true){
+//            edtPassword.setText(intent.getStringExtra("password"));
+//            edtUserName.setText(intent.getStringExtra("username"));
+//
+//        }else if (check==false){
+//            edtPassword.setText("");
+//            edtUserName.setText("");
+//        }
+        restoringPreferences();
         edtUserName.setText(sharedPreferences.getString("username",""));
         edtPassword.setText(sharedPreferences.getString("password",""));
         checkBox.setChecked(sharedPreferences.getBoolean("checked", false));
-
+        
+        
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,7 +56,8 @@ public class LoginActivity extends AppCompatActivity {
                 if ((username.isEmpty()) || (password.isEmpty())) {
                     Toast.makeText(LoginActivity.this, "Hãy điền đầy đủ username và password", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
+                }
+                else {
                     savePreferences();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("name", username);
@@ -55,9 +68,17 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+
+
+
+//        btnGotoRegister.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent1=new Intent(LoginActivity.this,SignInActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
     }
-
-
 
 
 
@@ -80,8 +101,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void savePreferences() {
 
-         sharedPreferences = getSharedPreferences(prefname, MODE_PRIVATE);
-      editor = sharedPreferences.edit();
+        sharedPreferences = getSharedPreferences("userlogin", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         String username = edtUserName.getText().toString();
         String password = edtPassword.getText().toString();
@@ -96,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.commit();
 
     }
+
 
     public void restoringPreferences() {
          sharedPreferences = getSharedPreferences("userlogin", MODE_PRIVATE);
@@ -118,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         btnshow = findViewById(R.id.btnShow);
         btnLogin = findViewById(R.id.btnLogin);
         checkBox = findViewById(R.id.checkbox);
+//        btnGotoRegister=findViewById(R.id.btnGotoRegister);
     }
 
 
