@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 public interface Service {
 
 @GET("/api/phat-tu/danh-sach/{fromDate}/{toDate}")
-    Call<List<User>> getFromDateToDate(@Header("access_token") String access_token,
+    Call<List<User>> getFromDateToDate(@Header("Authorization") String Authorization,
                                        @Path("fromDate") String fromDate,
                                        @Path("toDate") String toDate
                                         );

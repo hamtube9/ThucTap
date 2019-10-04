@@ -38,10 +38,10 @@ public class ListUserActivity extends AppCompatActivity {
               "2019-08-01","2019-10-01").enqueue(new Callback<List<User>>() {
           @Override
           public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-            if (response.isSuccessful()){
+              if (response.code()==200 && response.body()!= null) {
 
                 Log.e("data", response.body().toString());
-             //   adapter.updateData(response.body());
+                adapter.updateData(response.body());
 
             }
           }
