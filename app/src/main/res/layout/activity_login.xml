@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_menu"
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
@@ -12,59 +13,83 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="35dp"
         android:text="Login"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"/>
 
-    <LinearLayout
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+  <RelativeLayout
+      android:layout_marginTop="150dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-        <TextView
+      <ImageView
+          android:layout_width="33dp"
+          android:layout_height="36dp"
+            android:id="@+id/iconuser"
+          android:layout_alignTop="@+id/edtUserName"
+          android:layout_alignBottom="@+id/edtUserName"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentLeft="true"
+          android:layout_marginStart="15dp"
+          android:layout_marginLeft="15dp"
+          android:layout_marginTop="4dp"
+          android:layout_marginBottom="9dp"
+          android:src="@drawable/user" />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="UserName : "
-            android:textSize="15dp"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
+      <EditText
+          android:id="@+id/edtUserName"
+          android:layout_width="322dp"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+          android:layout_alignParentRight="true"
+          android:textColor="#000"
+          android:layout_marginEnd="38dp"
+          android:layout_marginRight="38dp"
+          android:hint="Username"
+          android:textColorHint="#000"
+          android:textSize="20dp" />
+  </RelativeLayout>
 
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/edtUserName"/>
-    </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password : "
-            android:textSize="15dp"/>
+
+
+
 
         <RelativeLayout
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="20dp"
-            android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="20dp"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="33dp"
+                android:layout_height="36dp"
+                android:layout_alignBottom="@+id/edtPassword"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="9dp"
+                android:src="@drawable/password" />
+
             <EditText
-                android:layout_width="match_parent"
+                android:id="@+id/edtPassword"
+                android:layout_width="322dp"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="38dp"
+                android:layout_marginRight="38dp"
+                android:hint="Password"
+                android:textColor="#000"
+                android:textColorHint="#000"
                 android:inputType="textPassword"
-                android:id="@+id/edtPassword"/>
+                android:textSize="20dp" />
 
             <ImageView
                 android:id="@+id/btnShow"
@@ -83,24 +108,21 @@
 
 
 
-    </LinearLayout>
-    <CheckBox
-        android:id="@+id/checkbox"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/btnLogin"
-        android:layout_marginTop="20dp"/>
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Register"-->
-        <!--android:id="@+id/btnGotoRegister"-->
-        <!--android:layout_marginTop="10dp"/>-->
+        android:background="#12d8fa"
+        android:layout_marginTop="150dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        android:textColor="#000"
+        android:text="No account ? Register pls "/>
 </LinearLayout>

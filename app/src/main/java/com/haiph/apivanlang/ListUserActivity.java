@@ -39,7 +39,6 @@ public class ListUserActivity extends AppCompatActivity {
           @Override
           public void onResponse(Call<List<User>> call, Response<List<User>> response) {
               if (response.code()==200 && response.body()!= null) {
-
                 Log.e("data", response.body().toString());
                 adapter.updateData(response.body());
 

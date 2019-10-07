@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,15 +15,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.haiph.apivanlang.model.Token;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText edtUserName, edtPassword;
-    private Button btnLogin,btnGotoRegister;
+    private Button btnLogin, btnGotoRegister;
     private ImageView btnshow;
     boolean check;
-    private CheckBox checkBox;
+
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    String prefname = "userlogin";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,56 +42,40 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         initView();
         showPassword();
-
-//        Intent intent=getIntent();
-//        check = intent.getExtras().getBoolean("checked");
-//        if (check==true){
-//            edtPassword.setText(intent.getStringExtra("password"));
-//            edtUserName.setText(intent.getStringExtra("username"));
-//
-//        }else if (check==false){
-//            edtPassword.setText("");
-//            edtUserName.setText("");
-//        }
         restoringPreferences();
-        edtUserName.setText(sharedPreferences.getString("username",""));
-        edtPassword.setText(sharedPreferences.getString("password",""));
-        checkBox.setChecked(sharedPreferences.getBoolean("checked", false));
-        
-        
+        edtUserName.setText(sharedPreferences.getString("username", ""));
+        edtPassword.setText(sharedPreferences.getString("password", ""));
+
+
+        final Token token = new Token();
+        Log.e("username", "id : " + token.getUserName());
+
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username = edtUserName.getText().toString();
                 String password = edtPassword.getText().toString();
 
+
                 if ((username.isEmpty()) || (password.isEmpty())) {
                     Toast.makeText(LoginActivity.this, "Hãy điền đầy đủ username và password", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                else {
+                } else if (!username.equals("admin") || !password.equals("1")) {
+                    Toast.makeText(LoginActivity.this, "Sai thông tin", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    getToken();
                     savePreferences();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    Token token = new Token();
                     intent.putExtra("name", username);
+                    intent.putExtra("token", token.getAccessToken());
                     startActivity(intent);
                 }
-
             }
         });
-
-
-
-
-
-//        btnGotoRegister.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent1=new Intent(LoginActivity.this,SignInActivity.class);
-//                startActivity(intent1);
-//            }
-//        });
     }
-
 
 
     private void showPassword() {
@@ -100,37 +96,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void savePreferences() {
-
         sharedPreferences = getSharedPreferences("userlogin", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         String username = edtUserName.getText().toString();
         String password = edtPassword.getText().toString();
-        boolean check = checkBox.isChecked();
-        if (!check) {
-            editor.clear();
-        }else {
-            editor.putString("username", username);
-            editor.putString("password", password);
-            editor.putBoolean("checked",true);
-        }
+
+        editor.putString("username", username);
+        editor.putString("password", password);
+
+
         editor.commit();
 
     }
 
 
     public void restoringPreferences() {
-         sharedPreferences = getSharedPreferences("userlogin", MODE_PRIVATE);
-         boolean check = sharedPreferences.getBoolean("checked",false);
-         if (check) {
-             String username = sharedPreferences.getString("username", "");
-             String password = sharedPreferences.getString("password", "");
-             edtPassword.setText(password);
-             edtUserName.setText(username);
+        sharedPreferences = getSharedPreferences("userlogin", MODE_PRIVATE);
 
-         }
-         checkBox.setChecked(check);
-
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
+        edtPassword.setText(password);
+        edtUserName.setText(username);
     }
 
 
@@ -139,9 +126,25 @@ public class LoginActivity extends AppCompatActivity {
         edtUserName = findViewById(R.id.edtUserName);
         btnshow = findViewById(R.id.btnShow);
         btnLogin = findViewById(R.id.btnLogin);
-        checkBox = findViewById(R.id.checkbox);
-//        btnGotoRegister=findViewById(R.id.btnGotoRegister);
+
+
     }
 
 
+    public void getToken() {
+        RetrofitService.getInstance().getTokenToLogin(edtUserName.getText().toString(), edtPassword.getText().toString(), "password").enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                if (response.isSuccessful()) {
+                    response.body();
+                    Log.e("response", "" + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Token> call, Throwable t) {
+
+            }
+        });
+    }
 }

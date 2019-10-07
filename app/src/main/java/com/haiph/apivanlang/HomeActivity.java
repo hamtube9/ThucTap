@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,7 +20,10 @@ public class HomeActivity extends AppCompatActivity {
         btnGoToListUser=findViewById(R.id.btnGotoListUser);
 
         final Intent intent = getIntent();
+
         tvUsername.setText(intent.getStringExtra("name"));
+        String token = intent.getStringExtra("token");
+        Log.e("token","token : " +token);
 
         btnGoToListUser.setOnClickListener(new View.OnClickListener() {
             @Override
