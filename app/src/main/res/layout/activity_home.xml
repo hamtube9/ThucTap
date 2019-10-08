@@ -8,22 +8,61 @@
     tools:context=".HomeActivity">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:text="Xin Chào "/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarHome"
+        android:layout_width="match_parent"
+        android:background="@drawable/gradient_toolbar"
+        android:layout_height="wrap_content">
+
+    </androidx.appcompat.widget.Toolbar>
+
+
 
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"/>
+        android:textSize="30dp"/>
 
-    <Button
-        android:text="Go to list user"
-        android:textAllCaps="false"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnGotoListUser"/>
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/imgListPhatTu"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="200dp"
+                android:layout_gravity="bottom"
+                android:src="@drawable/listuser"
+                />
+            <TextView
+                android:id="@+id/tvListPhatTu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Danh sách phật tử"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_margin="10dp"
+
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="200dp"
+            android:layout_gravity="bottom"
+        />/    android:src="@drawable/listUser"
+            />
+    </LinearLayout>
+
 </LinearLayout>

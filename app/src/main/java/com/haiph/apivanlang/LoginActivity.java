@@ -22,6 +22,7 @@ import com.haiph.apivanlang.model.Token;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,8 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword.setText(sharedPreferences.getString("password", ""));
 
 
-        final Token token = new Token();
-        Log.e("username", "id : " + token.getUserName());
+
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -66,11 +66,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     getToken();
-                    savePreferences();
+
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    Token token = new Token();
-                    intent.putExtra("name", username);
-                    intent.putExtra("token", token.getAccessToken());
                     startActivity(intent);
                 }
             }
@@ -95,24 +92,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void savePreferences() {
-        sharedPreferences = getSharedPreferences("userlogin", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
 
-        String username = edtUserName.getText().toString();
-        String password = edtPassword.getText().toString();
-
-        editor.putString("username", username);
-        editor.putString("password", password);
-
-
-        editor.commit();
-
-    }
 
 
     public void restoringPreferences() {
-        sharedPreferences = getSharedPreferences("userlogin", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
 
         String username = sharedPreferences.getString("username", "");
         String password = sharedPreferences.getString("password", "");
@@ -132,18 +116,26 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void getToken() {
-        RetrofitService.getInstance().getTokenToLogin(edtUserName.getText().toString(), edtPassword.getText().toString(), "password").enqueue(new Callback<Token>() {
+        RetrofitService.getInstance().getToken("password","admin","1").enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
-                if (response.isSuccessful()) {
-                    response.body();
-                    Log.e("response", "" + response.body());
-                }
+            if (response.isSuccessful())
+            {
+            response.body();
+                sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("username", response.body().getUserName());
+                editor.putString("token",""+response.body().getAccessToken());
+                editor.commit();
+                Log.e("token",""+response.body().getAccessToken());
+                Log.e("username",""+response.body().getUserName());
+            }
+
             }
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-
+                Log.e("err",t.getMessage());
             }
         });
     }

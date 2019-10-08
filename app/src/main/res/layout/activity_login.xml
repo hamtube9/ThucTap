@@ -18,91 +18,86 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"/>
 
-  <RelativeLayout
-      android:layout_marginTop="150dp"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-      <ImageView
-          android:layout_width="33dp"
-          android:layout_height="36dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="150dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:layout_width="33dp"
+            android:layout_height="36dp"
             android:id="@+id/iconuser"
-          android:layout_alignTop="@+id/edtUserName"
-          android:layout_alignBottom="@+id/edtUserName"
-          android:layout_alignParentStart="true"
-          android:layout_alignParentLeft="true"
-          android:layout_marginStart="15dp"
-          android:layout_marginLeft="15dp"
-          android:layout_marginTop="4dp"
-          android:layout_marginBottom="9dp"
-          android:src="@drawable/user" />
-
-      <EditText
-          android:id="@+id/edtUserName"
-          android:layout_width="322dp"
-          android:layout_height="wrap_content"
-          android:layout_alignParentEnd="true"
-          android:layout_alignParentRight="true"
-          android:textColor="#000"
-          android:layout_marginEnd="38dp"
-          android:layout_marginRight="38dp"
-          android:hint="Username"
-          android:textColorHint="#000"
-          android:textSize="20dp" />
-  </RelativeLayout>
-
-
-
-
-
-
-
-
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/user" />
         <RelativeLayout
-        android:layout_marginTop="30dp"
+
             android:layout_width="match_parent"
-            android:layout_marginBottom="20dp"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="33dp"
-                android:layout_height="36dp"
-                android:layout_alignBottom="@+id/edtPassword"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="9dp"
-                android:src="@drawable/password" />
+
 
             <EditText
-                android:id="@+id/edtPassword"
+                android:id="@+id/edtUserName"
                 android:layout_width="322dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginEnd="38dp"
-                android:layout_marginRight="38dp"
-                android:hint="Password"
                 android:textColor="#000"
+                android:hint="Username"
                 android:textColorHint="#000"
-                android:inputType="textPassword"
                 android:textSize="20dp" />
-
-            <ImageView
-                android:id="@+id/btnShow"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignEnd="@+id/edtPassword"
-                android:layout_alignRight="@+id/edtPassword"
-                android:layout_alignBottom="@+id/edtPassword"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="13dp"
-                android:src="@drawable/hide" />
         </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_marginTop="30dp"
+    android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="33dp"
+            android:layout_height="36dp"
+            android:src="@drawable/password" />
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="322dp"
+            android:layout_height="wrap_content"
+
+            android:hint="Password"
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:inputType="textPassword"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/btnShow"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignEnd="@+id/edtPassword"
+            android:layout_alignRight="@+id/edtPassword"
+            android:layout_alignBottom="@+id/edtPassword"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="13dp"
+            android:src="@drawable/hide" />
+    </RelativeLayout>
+</LinearLayout>
+
+
+
 
 
 

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
     ArrayList<User> listUser;
-Context context;
+    Context context;
 
     public ListUserAdapter(ArrayList<User> listUser, Context context) {
         this.listUser = listUser;
@@ -35,12 +35,12 @@ Context context;
 
     @Override
     public void onBindViewHolder(@NonNull ListUserAdapter.ViewHolder holder, int position) {
-        User user=listUser.get(position);
+        User user = listUser.get(position);
         holder.tvName.setText(user.getData().get(position).getTen());
         holder.tvID.setText(user.getData().get(position).getId());
         holder.tvDiaChi.setText(user.getData().get(position).getDiaChi());
         holder.tvDienThoai.setText(user.getData().get(position).getSoDienThoai());
-        Glide.with(context).load(user.getData().get(position).getLinkAnhDaiDien()).centerCrop().into(holder.imgUser);
+        //   Glide.with(context).load(user.getData().get(position).getLinkAnhDaiDien()).centerCrop().into(holder.imgUser);
 
     }
 
@@ -50,20 +50,21 @@ Context context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvID,tvDiaChi,tvDienThoai;
+        TextView tvName, tvID, tvDiaChi, tvDienThoai;
         ImageView imgUser;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvID=itemView.findViewById(R.id.tvID);
-            tvName=itemView.findViewById(R.id.tvName);
-            imgUser=itemView.findViewById(R.id.imgUser);
-            tvDiaChi=itemView.findViewById(R.id.tvDiaChi);
-            tvDienThoai=itemView.findViewById(R.id.tvDienThoai);
+            tvID = itemView.findViewById(R.id.tvID);
+            tvName = itemView.findViewById(R.id.tvName);
+            imgUser = itemView.findViewById(R.id.imgUser);
+            tvDiaChi = itemView.findViewById(R.id.tvDiaChi);
+            tvDienThoai = itemView.findViewById(R.id.tvDienThoai);
         }
     }
 
-    public void updateData(List<User> list){
-    this.listUser.addAll(list);
-    notifyDataSetChanged();
+    public void updateData(List<User> list) {
+        this.listUser.addAll(list);
+        notifyDataSetChanged();
     }
 }
