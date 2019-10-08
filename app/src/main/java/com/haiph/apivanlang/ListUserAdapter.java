@@ -11,16 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.haiph.apivanlang.model.PhatTu;
 import com.haiph.apivanlang.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
-    ArrayList<User> listUser;
+    ArrayList<PhatTu> listUser;
     Context context;
 
-    public ListUserAdapter(ArrayList<User> listUser, Context context) {
+    public ListUserAdapter(ArrayList<PhatTu> listUser, Context context) {
         this.listUser = listUser;
         this.context = context;
     }
@@ -35,12 +36,11 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ListUserAdapter.ViewHolder holder, int position) {
-        User user = listUser.get(position);
-        holder.tvName.setText(user.getData().get(position).getTen());
-        holder.tvID.setText(user.getData().get(position).getId());
-        holder.tvDiaChi.setText(user.getData().get(position).getDiaChi());
-        holder.tvDienThoai.setText(user.getData().get(position).getSoDienThoai());
-        //   Glide.with(context).load(user.getData().get(position).getLinkAnhDaiDien()).centerCrop().into(holder.imgUser);
+        PhatTu phatTu = listUser.get(position);
+        holder.tvName.setText(phatTu.getName());
+        holder.tvID.setText(phatTu.getId());
+        holder.tvDiaChi.setText(phatTu.getDiachi());
+        holder.tvDienThoai.setText(phatTu.getDienthoai());
 
     }
 
@@ -63,7 +63,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         }
     }
 
-    public void updateData(List<User> list) {
+    public void updateData(List<PhatTu> list) {
         this.listUser.addAll(list);
         notifyDataSetChanged();
     }

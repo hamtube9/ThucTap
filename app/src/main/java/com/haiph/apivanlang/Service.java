@@ -19,6 +19,12 @@ import retrofit2.http.Query;
 
 public interface Service {
 
+//    @GET("/api/phat-tu/danh-sach/{fromDate}/{toDate}")
+//    Call<List<User>> getFromDateToDate(@Header("Authorization") String Authorization,
+//                                       @Path("fromDate") String fromDate,
+//                                       @Path("toDate") String toDate
+//    );
+
     @GET("/api/phat-tu/danh-sach/{fromDate}/{toDate}")
     Call<ResponseBody> getFromDateToDate(@Header("Authorization") String Authorization,
                                        @Path("fromDate") String fromDate,
