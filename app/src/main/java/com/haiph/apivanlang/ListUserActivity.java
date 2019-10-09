@@ -39,9 +39,9 @@ public class ListUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_user);
         rcView = findViewById(R.id.rcView);
         rcView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
         adapter = new ListUserAdapter(list, getApplicationContext());
         rcView.setAdapter(adapter);
+
         SharedPreferences sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         Log.e("getTokenList", "" + token);
@@ -55,40 +55,36 @@ public class ListUserActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
 
-                    //   Log.e("data",response.body()+"");
-
-
                     try {
                         String data = response.body().string();
                         JSONObject j = new JSONObject(data);
-                  //      Log.e("data", j + "");
+                        //      Log.e("data", j + "");
                         JSONArray array = j.getJSONArray("data");
-                    //    Log.e("array",array+"");
-                        for (int i = 0;i<array.length();i++){
+                        //    Log.e("array",array+"");
+                        for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
                             String name = object.getString("hoVaTen");
                             String id = object.getString("id");
                             String diachi = object.getString("diaChi");
                             String dienthoai = object.getString("soDienThoai");
-                            Log.e("nameOb","name : " +name + " " +id + " " +diachi+" "+ dienthoai);
-                            PhatTu phatTu =new PhatTu(name,id,diachi,dienthoai);
+                            Log.e("nameOb", "name : " + name + "/n id " + id + "/n địa chỉ : " + diachi + "/n điện thoại " + dienthoai);
+                            PhatTu phatTu = new PhatTu(name, id, diachi, dienthoai);
 
-                            list.addAll(Collections.singleton(phatTu));
-                            Log.e("list",list+"");
-                            adapter.updateData(list);
-
-
+                            list.add(phatTu);
                         }
-                    } catch (Exception e) {
+                        adapter.notifyDataSetChanged();
 
+                    } catch (Exception e) {
+                        Log.e("exception", e + "");
                     }
+
 
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Log.e("error", t.getMessage());
             }
         });
 

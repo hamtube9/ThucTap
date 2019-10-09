@@ -37,10 +37,10 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ListUserAdapter.ViewHolder holder, int position) {
         PhatTu phatTu = listUser.get(position);
-        holder.tvName.setText(phatTu.getName());
-        holder.tvID.setText(phatTu.getId());
-        holder.tvDiaChi.setText(phatTu.getDiachi());
-        holder.tvDienThoai.setText(phatTu.getDienthoai());
+        holder.tvName.setText("Họ và tên : "+phatTu.getName());
+        holder.tvID.setText("Mã ID : "+phatTu.getId());
+        holder.tvDiaChi.setText("Địa chỉ : "+phatTu.getDiachi());
+        holder.tvDienThoai.setText("Điện thoại : "+phatTu.getDienthoai());
 
     }
 
@@ -51,20 +51,17 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvID, tvDiaChi, tvDienThoai;
-        ImageView imgUser;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvID = itemView.findViewById(R.id.tvID);
             tvName = itemView.findViewById(R.id.tvName);
-            imgUser = itemView.findViewById(R.id.imgUser);
+
             tvDiaChi = itemView.findViewById(R.id.tvDiaChi);
             tvDienThoai = itemView.findViewById(R.id.tvDienThoai);
         }
     }
 
-    public void updateData(List<PhatTu> list) {
-        this.listUser.addAll(list);
-        notifyDataSetChanged();
-    }
+
 }
