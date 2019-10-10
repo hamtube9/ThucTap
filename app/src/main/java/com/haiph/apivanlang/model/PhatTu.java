@@ -4,8 +4,7 @@ public class PhatTu {
     String name;
     String id;
     String diachi;
-
-
+    String dienthoai;
 
     public String getName() {
         return name;
@@ -46,6 +45,5 @@ public class PhatTu {
         this.dienthoai = dienthoai;
     }
 
-    String dienthoai;
 
 }

@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListUserActivity">
+    android:orientation="vertical"
+    tools:context=".activity.ListUserActivity">
 
-
+<androidx.appcompat.widget.Toolbar
+    android:layout_width="match_parent"
+    android:background="@drawable/gradient_toolbar"
+    android:layout_height="wrap_content"
+    android:id="@+id/toolbarList"></androidx.appcompat.widget.Toolbar>
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:id="@+id/rcView"

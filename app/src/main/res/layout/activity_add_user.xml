@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.AddUserActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_toolbar"
+        android:id="@+id/toolbarAddUser"></androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID : "
+            android:textSize="24dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#000"/>
+
+        <EditText
+            android:id="@+id/edtID"
+            android:layout_marginTop="5dp"
+            android:hint="ID User"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Họ và Tên : "
+            android:textSize="24dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#000"/>
+
+        <EditText
+            android:id="@+id/edtTenUser"
+            android:layout_marginTop="5dp"
+            android:hint="Name User"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại : "
+            android:textSize="24dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#000"/>
+
+        <EditText
+            android:layout_marginTop="5dp"
+            android:hint="Phone Number"
+            android:id="@+id/edtPhone"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa Chỉ : "
+            android:textSize="24dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#000"/>
+
+        <EditText
+            android:layout_marginTop="5dp"
+            android:hint="Address"
+            android:id="@+id/edtDiaChi"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm Phật Tử"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/btnAddUser"
+        android:layout_marginTop="30dp"/>
+</LinearLayout>

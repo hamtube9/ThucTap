@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".activity.HomeActivity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -52,17 +52,31 @@
                 android:textSize="20dp"/>
 
         </LinearLayout>
-
-
-        <ImageView
-            android:layout_margin="10dp"
-
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom"
-        />/    android:src="@drawable/listUser"
-            />
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/imgAddUser"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="200dp"
+                android:layout_gravity="bottom"
+                android:src="@drawable/adduser"
+                />
+            <TextView
+                android:id="@+id/tvAddUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Thêm Phật tử"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>
