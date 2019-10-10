@@ -16,6 +16,9 @@ import com.haiph.apivanlang.R;
 import com.haiph.apivanlang.Service.OkHttpService;
 import com.haiph.apivanlang.model.PhatTu;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,7 @@ public class AddUserActivity extends AppCompatActivity {
     private EditText edtTenUser, edtDiaChi, edtSoDienThoai, edtID;
     private Button btnAddUser;
     List<PhatTu> list;
+    String token = "Bearer KpWPsSPjIfNNbG60isArijFmcZclhPuvQa9LlUOYl2hdOLnKP10goRYW4Pgw5gXnIqiiJTyI_WSPI_4ZdKvulDjhMdaG9B0E_UmDDs2O4Jim3jvTr2nMIkPpk03jlWIzPqTuu_OXs5MiU3Q-qH_UtTROMfLEGc05gmnN8wjQg3cndDwx3Z9I2keatx8gHtzzj59d6Fx8FFXfRLDGvBmRvGniSmvwAmgKzr89L-Bd61GwH0oow4_cUGU8-W-PThF0zvfAvQocjJmNm-nZO71_R5c3Kket2bPKP9JqP6ehlmU-YAo2dzu8VRdbwJsKBRLekGY4-GZa0OxdXxGyVT3GEtuHTwlMKs3NQB-4j9-jcbZuLQS-s7d_Tq4qCJEZD95_p8QU4GiK5ld9mFszVjvm-zHUlcbjuQaizKM6eZbMXSIvhZJO2Jk0zvbFvKk86P75L45HeTMCt6BNcIAChTqgzJxjG5dNHYi3a0yRAAan4UmBvLDJnYUWSiEZdlCVCPYjVXm3h7zdiacL_CZp66xJK2vbGMsWv5kE-3P57iCW_44";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +53,19 @@ public class AddUserActivity extends AppCompatActivity {
                  String SoDienThoai = edtSoDienThoai.getText().toString();
                 PhatTu phatTu=new PhatTu(ID,Ten,DiaChi,SoDienThoai);
                 list.add(phatTu);
+                Log.e("list",""+list.add(phatTu));
                AddUser(ID,Ten,DiaChi,SoDienThoai);
 
                Intent i = new Intent(AddUserActivity.this,ListUserActivity.class);
                startActivity(i);
 
+                Toast.makeText(AddUserActivity.this, "Phật tử : "+phatTu, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void AddUser(String ID, String Ten, String DiaChi, String SoDienThoai) {
-        SharedPreferences sharedPreferences= getSharedPreferences("apiVanLang",MODE_PRIVATE);
-        String token = sharedPreferences.getString("token","");
+    private void AddUser(final String ID, final String Ten, final String DiaChi, final String SoDienThoai) {
+
         Log.e("tokenAddUser","token : "+token);
         OkHttpService.getService().postNewPhatTu(token,ID,"","","",
                 "",Ten,"","","",SoDienThoai,DiaChi,"","","","","","","","","","","","","","","",
@@ -69,16 +74,14 @@ public class AddUserActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Log.e("dataAdd","data : "+response.body());
-
-                    Toast.makeText(AddUserActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    response.body();
 
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(AddUserActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+              Log.e("loiAddUser",t.getMessage());
             }
         });
     }
@@ -86,7 +89,7 @@ public class AddUserActivity extends AppCompatActivity {
     private void initView() {
         toolbar = findViewById(R.id.toolbarAddUser);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Thêm Phật Tử");
+
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

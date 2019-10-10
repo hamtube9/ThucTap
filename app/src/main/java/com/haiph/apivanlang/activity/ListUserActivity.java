@@ -39,7 +39,7 @@ public class ListUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_user);
         toolbar=findViewById(R.id.toolbarList);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Danh Sách các Phật Tử");
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +95,7 @@ public class ListUserActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("error", t.getMessage());
+                Log.e("error", t.getMessage()+"");
             }
         });
 
