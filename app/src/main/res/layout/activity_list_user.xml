@@ -9,9 +9,12 @@
 
 <androidx.appcompat.widget.Toolbar
     android:layout_width="match_parent"
+    app:title="Danh sách Phật Tử"
     android:background="@drawable/gradient_toolbar"
     android:layout_height="wrap_content"
-    android:id="@+id/toolbarList"></androidx.appcompat.widget.Toolbar>
+    android:id="@+id/toolbarList">
+
+</androidx.appcompat.widget.Toolbar>
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:id="@+id/rcView"

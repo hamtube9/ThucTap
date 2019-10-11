@@ -3,43 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.AddUserActivity">
+    android:layout_height="match_parent"
+    tools:context=".activity.EditUserActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Thêm Phật Tử"
+        app:title="Sửa thông tin Phật Tử"
         android:background="@drawable/gradient_toolbar"
-        android:id="@+id/toolbarAddUser">
+        android:id="@+id/toolbarEditUser">
 
 
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ID : "
-            android:textSize="24dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="#000"/>
-
-        <EditText
-            android:id="@+id/edtID"
-            android:layout_marginTop="5dp"
-            android:hint="ID User"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="10dp"
@@ -57,7 +35,7 @@
             android:textColor="#000"/>
 
         <EditText
-            android:id="@+id/edtTenUser"
+            android:id="@+id/edtEditTenUser"
             android:layout_marginTop="5dp"
             android:hint="Name User"
             android:layout_marginLeft="20dp"
@@ -84,7 +62,7 @@
         <EditText
             android:layout_marginTop="5dp"
             android:hint="Phone Number"
-            android:id="@+id/edtPhone"
+            android:id="@+id/edtEditPhone"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
@@ -108,7 +86,7 @@
         <EditText
             android:layout_marginTop="5dp"
             android:hint="Address"
-            android:id="@+id/edtDiaChi"
+            android:id="@+id/edtEditDiaChi"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
@@ -118,8 +96,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thêm Phật Tử"
+        android:textAllCaps="false"
+        android:text="Sửa thông tin Phật Tử"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/btnAddUser"
+        android:id="@+id/btnEditUser"
         android:layout_marginTop="30dp"/>
+
 </LinearLayout>

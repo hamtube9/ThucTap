@@ -68,7 +68,8 @@ public class AddUserActivity extends AppCompatActivity {
 
         Log.e("tokenAddUser","token : "+token);
         OkHttpService.getService().postNewPhatTu(token,ID,"","","",
-                "",Ten,"","","",SoDienThoai,DiaChi,"","","","","","","","","","","","","","","",
+                "",Ten,"","","",SoDienThoai,DiaChi,"","","","","","",
+                "","","","","","","","","",
                 "","","","","","","","","","",
                 "", "","","","").enqueue(new Callback<ResponseBody>() {
             @Override
