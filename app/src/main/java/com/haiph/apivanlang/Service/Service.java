@@ -1,29 +1,25 @@
 package com.haiph.apivanlang.Service;
 
 import com.haiph.apivanlang.model.Token;
-import com.haiph.apivanlang.model.User;
+import com.haiph.apivanlang.response.ImageResponse;
 
-import java.util.List;
-
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 
 public interface Service {
 
-//    @GET("/api/phat-tu/danh-sach/{fromDate}/{toDate}")
-//    Call<List<User>> getFromDateToDate(@Header("Authorization") String Authorization,
-//                                       @Path("fromDate") String fromDate,
-//                                       @Path("toDate") String toDate
-//    );
+
 
     @GET("/api/phat-tu/danh-sach/{fromDate}/{toDate}")
     Call<ResponseBody> getFromDateToDate(@Header("Authorization") String Authorization,
@@ -39,6 +35,44 @@ public interface Service {
             @Field("grant_type") String grantType,
             @Field("username") String userName,
             @Field("password") String passWord
+    );
+
+
+    @GET("/api/phat-tu/lay-du-lieu-thong-ke/{namDuongLich}")
+    Call<ResponseBody> getDuLieu(@Header("Authorization") String Authorization,
+                                 @Path("namDuongLich") String namDuongLich);
+
+    //http://api.testqlpt.vla.vn/
+
+    @GET("/api/danh-muc/danh-muc-hoat-dong-phat-su")
+    Call<ResponseBody> getChuaHoatDong(@Header("Authorization") String Authorization);
+
+    @GET("/api/danh-muc/danh-muc-xa")
+    Call<ResponseBody> getXa(@Header("Authorization") String Authorization);
+
+
+    @GET("/api/danh-muc/danh-muc-huyen")
+    Call<ResponseBody> getHuyen(@Header("Authorization") String Authorization);
+
+
+
+    @GET("/api/danh-muc/danh-muc-quoc-gia")
+    Call<ResponseBody> getQuocGia(@Header("Authorization") String Authorization);
+
+    @GET("api/danh-muc/danh-muc-tinh")
+    Call<ResponseBody> getTinh(@Header("Authorization") String Authorization);
+
+
+    @Multipart
+    @POST("api/anh/upload-anh")
+    Call<ResponseBody> uploadAvatar(@Header("Authorization") String Authorization,
+                                    @Part("description")  RequestBody description,
+                                     @Part MultipartBody.Part Photo
+                                    );
+    @Multipart
+    @POST("api/anh/upload-anh")
+    Call<ResponseBody> uploadPhoto(@Part("description")  RequestBody description,
+                                    @Part MultipartBody.Part Photo
     );
 
     @FormUrlEncoded

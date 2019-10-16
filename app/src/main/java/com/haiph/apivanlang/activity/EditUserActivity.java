@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.haiph.apivanlang.R;
 import com.haiph.apivanlang.Service.OkHttpService;
+import com.haiph.apivanlang.list.ListUserActivity;
 import com.haiph.apivanlang.model.PhatTu;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditUserActivity extends AppCompatActivity {
-    EditText edtEditPhone, edtEditTenUser, edtEditDiaChi;
+    EditText edtEditPhone, edtEditTenUser, edtEditDiaChi,edtCMT;
     Button btnEditUser;
     Toolbar toolbarEditUser;
     List<PhatTu> list;
@@ -51,10 +52,11 @@ public class EditUserActivity extends AppCompatActivity {
                 String nameNew = edtEditTenUser.getText().toString();
                 String diachiNew = edtEditDiaChi.getText().toString();
                 String phoneNew = edtEditPhone.getText().toString();
-                PhatTu phatTu = new PhatTu(id, nameNew, diachiNew, phoneNew);
-                list.add(phatTu);
+                String cmt = edtCMT.getText().toString();
+               // PhatTu phatTu = new PhatTu(id, nameNew, diachiNew, phoneNew,cmt);
+              //  list.add(phatTu);
                 EditData(nameNew, diachiNew, phoneNew);
-                Intent i = new Intent(EditUserActivity.this,ListUserActivity.class);
+                Intent i = new Intent(EditUserActivity.this, ListUserActivity.class);
                 startActivity(i);
             }
         });
@@ -88,6 +90,7 @@ public class EditUserActivity extends AppCompatActivity {
         edtEditPhone = findViewById(R.id.edtEditPhone);
         edtEditTenUser = findViewById(R.id.edtEditTenUser);
         btnEditUser = findViewById(R.id.btnEditUser);
+        edtCMT=findViewById(R.id.edtEditCMT);
         toolbarEditUser = findViewById(R.id.toolbarEditUser);
         setSupportActionBar(toolbarEditUser);
         toolbarEditUser.setNavigationOnClickListener(new View.OnClickListener() {

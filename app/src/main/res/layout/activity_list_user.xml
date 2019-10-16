@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.ListUserActivity">
+    tools:context=".list.ListUserActivity">
 
 <androidx.appcompat.widget.Toolbar
     android:layout_width="match_parent"
-    app:title="Danh sách Phật Tử"
     android:background="@drawable/gradient_toolbar"
     android:layout_height="wrap_content"
+    app:title="Danh sách phật tử"
     android:id="@+id/toolbarList">
-
 </androidx.appcompat.widget.Toolbar>
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"

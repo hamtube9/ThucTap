@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +16,11 @@ import com.haiph.apivanlang.R;
 import com.haiph.apivanlang.model.PhatTu;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
+public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> implements Filterable {
     ArrayList<PhatTu> listUser;
+    ArrayList<PhatTu> filterListUser;
     Context context;
     ItemOnclick i;
 
@@ -25,7 +29,41 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         this.listUser = listUser;
         this.context = context;
         this.i=i;
+        filterListUser=new ArrayList<>(listUser);
     }
+
+    @Override
+    public Filter getFilter() {
+        return PhatTuFilter;
+    }
+
+    private Filter PhatTuFilter =new Filter() {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<PhatTu> filterList = new ArrayList<>();
+            if (constraint==null || constraint.length()==0){
+                filterList.addAll(filterListUser);
+            }else {
+                String filterPartern = constraint.toString().toLowerCase().trim();
+                for (PhatTu phatTu : filterListUser){
+                    if (phatTu.getName().toLowerCase().contains(filterPartern)){
+                        filterList.add(phatTu);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values =filterList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            listUser.clear();
+            listUser.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public interface ItemOnclick{
      public void setOnclickItemSelect(int position);
@@ -41,10 +79,12 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ListUserAdapter.ViewHolder holder, final int position) {
         PhatTu phatTu = listUser.get(position);
+        holder.tvCMT.setText("CMT : "+phatTu.getCMT());
         holder.tvName.setText("Họ và tên : "+phatTu.getName());
-        holder.tvID.setText("Mã ID : "+phatTu.getId());
+        holder.tvPhapDanh.setText("Pháp danh : "+phatTu.getPhapDanh());
         holder.tvDiaChi.setText("Địa chỉ : "+phatTu.getDiachi());
         holder.tvDienThoai.setText("Điện thoại : "+phatTu.getDienthoai());
+        holder.tvID.setText("ID : "+phatTu.getId());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,13 +99,15 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvID, tvDiaChi, tvDienThoai;
+        TextView tvName, tvPhapDanh, tvDiaChi, tvDienThoai,tvCMT,tvID;
         CardView cardView;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvID = itemView.findViewById(R.id.tvID);
+            tvCMT=itemView.findViewById(R.id.tvCMT);
+            tvID=itemView.findViewById(R.id.tvID);
+            tvPhapDanh = itemView.findViewById(R.id.tvPhapDanh);
             tvName = itemView.findViewById(R.id.tvName);
             cardView=itemView.findViewById(R.id.cardViewUser);
             tvDiaChi = itemView.findViewById(R.id.tvDiaChi);

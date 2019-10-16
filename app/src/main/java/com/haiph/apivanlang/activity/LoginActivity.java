@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +55,18 @@ public class LoginActivity extends AppCompatActivity {
                 if ((username.isEmpty()) || (password.isEmpty())) {
                     Toast.makeText(LoginActivity.this, "Hãy điền đầy đủ username và password", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (!username.equals("admin") || !password.equals("1")) {
+                } else if (!username.equals("admin") || !password.equals("12")) {
                     Toast.makeText(LoginActivity.this, "Sai thông tin", Toast.LENGTH_SHORT).show();
 
                 } else {
                     getToken();
+                   sharedPreferences = getSharedPreferences("APIVanLang",MODE_PRIVATE);
+                   editor = sharedPreferences.edit();
+                   editor.putString("username",edtUserName.getText().toString());
+                   editor.putString("password",edtPassword.getText().toString());
 
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+
                     startActivity(intent);
                 }
             }
@@ -110,18 +115,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void getToken() {
-        RetrofitService.getInstance().getToken("password","admin","1").enqueue(new Callback<Token>() {
+        RetrofitService.getInstance().getToken("password","admin",edtPassword.getText().toString()).enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
             if (response.isSuccessful())
             {
-            response.body();
+                response.body();
+
                 sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 editor.putString("username", response.body().getUserName());
-                editor.putString("token",""+response.body().getAccessToken());
+                token = String.valueOf(editor.putString("token",""+response.body().getAccessToken()));
+
                 editor.commit();
-                Log.e("token",""+response.body().getAccessToken());
+                Log.e("token",""+token);
                 Log.e("username",""+response.body().getUserName());
             }
 

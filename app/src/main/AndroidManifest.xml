@@ -3,6 +3,8 @@
     package="com.haiph.apivanlang">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,11 +15,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.EditUserActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".list.ListChuaHoatDong"></activity>
+        <activity android:name=".list.ListXa" />
+        <activity android:name=".list.ListHuyen" />
+        <activity android:name=".list.ListTinh" />
+        <activity android:name=".list.ListQuocGia" />
+        <activity android:name=".list.DuLieuThongKeActivity" />
+        <activity android:name=".activity.UploadImageActivity" />
+        <activity
+            android:name=".activity.EditUserActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.AddUserActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.MaterialComponents.NoActionBar.Bridge" />
         <activity
             android:name=".activity.HomeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -31,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ListUserActivity"
+            android:name=".list.ListUserActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

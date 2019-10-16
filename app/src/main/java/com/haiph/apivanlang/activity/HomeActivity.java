@@ -12,10 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haiph.apivanlang.R;
+import com.haiph.apivanlang.list.DuLieuThongKeActivity;
+import com.haiph.apivanlang.list.ListUserActivity;
 
 public class HomeActivity extends AppCompatActivity {
-    private TextView tvUsername,tvAddUser,tvListPhatTu;
-    private ImageView imgListPhatTu,imgAddPhatTu;
+    private TextView tvUsername,tvAddUser,tvListPhatTu,tvDuLieuThongKe;
+    private ImageView imgListPhatTu,imgAddPhatTu,imgDuLieuThongKe;
     SharedPreferences sharedPreferences;
     Toolbar toolbar;
     SharedPreferences.Editor editor;
@@ -26,20 +28,32 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         toolbar=findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
+        tvDuLieuThongKe=findViewById(R.id.tvDuLieuThongKe);
+        imgDuLieuThongKe=findViewById(R.id.imgDuLieuThongKe);
         tvUsername=findViewById(R.id.tvUsername);
         imgAddPhatTu=findViewById(R.id.imgAddUser);
         imgListPhatTu=findViewById(R.id.imgListPhatTu);
         tvAddUser=findViewById(R.id.tvAddUser);
         tvListPhatTu=findViewById(R.id.tvListPhatTu);
 
+        sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
+
+        String username = sharedPreferences.getString("username", "");
+         String data = sharedPreferences.getString("token","");
+        final      String token =data;
+        Log.e("tokenLogin",token+"");
+        tvUsername.setText("Chào mừng "+username+" quay trở lại");
+        Log.e("usernameHome",""+username);
+
         restoringPreferences();
         imgListPhatTu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent1=new Intent(HomeActivity.this, ListUserActivity.class);
-                sharedPreferences = getSharedPreferences("apiVanlang",MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putString("token",sharedPreferences.getString("token",""));
+                intent1.putExtra("token1",token);
+
+                Log.e("tokenIntent",""+token);
+
                 startActivity(intent1);
             }
         });
@@ -47,9 +61,31 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1=new Intent(HomeActivity.this,ListUserActivity.class);
-                sharedPreferences = getSharedPreferences("apiVanlang",MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putString("token",sharedPreferences.getString("token",""));
+                intent1.putExtra("token1",token);
+
+                Log.e("tokenIntent",""+token);
+
+                startActivity(intent1);
+            }
+        });
+        imgDuLieuThongKe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1=new Intent(HomeActivity.this, DuLieuThongKeActivity.class);
+                intent1.putExtra("token1",token);
+
+
+                startActivity(intent1);
+            }
+        });
+        tvDuLieuThongKe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1=new Intent(HomeActivity.this,DuLieuThongKeActivity.class);
+                intent1.putExtra("token1",token);
+
+                Log.e("tokenIntent",""+token);
+
                 startActivity(intent1);
             }
         });
@@ -58,9 +94,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1=new Intent(HomeActivity.this,AddUserActivity.class);
-                sharedPreferences = getSharedPreferences("apiVanlang",MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putString("token",sharedPreferences.getString("token",""));
+                intent1.putExtra("token1",token);
+
+                Log.e("tokenIntent",""+token);
+
                 startActivity(intent1);
             }
         });
@@ -69,9 +106,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1=new Intent(HomeActivity.this,AddUserActivity.class);
-                sharedPreferences = getSharedPreferences("apiVanlang",MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putString("token",sharedPreferences.getString("token",""));
+                intent1.putExtra("token1",token);
+
+                Log.e("tokenIntent",""+token);
+
                 startActivity(intent1);
             }
         });
@@ -79,14 +117,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void restoringPreferences() {
-        sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
 
-        String username = sharedPreferences.getString("username", "");
-        String token = sharedPreferences.getString("token","");
-
-       tvUsername.setText("Chào mừng "+username+" quay trở lại");
-       Log.e("usernameHome",""+username);
-       Log.e("tokenHome",""+token);
     }
 
 }
