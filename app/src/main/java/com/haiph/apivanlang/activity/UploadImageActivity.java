@@ -76,17 +76,7 @@ public class UploadImageActivity extends AppCompatActivity {
 
         MultipartBody.Part file = MultipartBody.Part.createFormData("photo", originalFile.getName(), filePart);
 
-        RetrofitService.getInstance().uploadAvatar(token,fileUriDescription,file).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
     }
 
 

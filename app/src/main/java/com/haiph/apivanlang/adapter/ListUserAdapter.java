@@ -18,52 +18,21 @@ import com.haiph.apivanlang.model.PhatTu;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> implements Filterable {
+public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
     ArrayList<PhatTu> listUser;
-    ArrayList<PhatTu> filterListUser;
     Context context;
     ItemOnclick i;
 
 
-    public ListUserAdapter(ArrayList<PhatTu> listUser, Context context,ItemOnclick i) {
+    public ListUserAdapter(ArrayList<PhatTu> listUser, Context context, ItemOnclick i) {
         this.listUser = listUser;
         this.context = context;
-        this.i=i;
-        filterListUser=new ArrayList<>(listUser);
+        this.i = i;
+
     }
 
-    @Override
-    public Filter getFilter() {
-        return PhatTuFilter;
-    }
 
-    private Filter PhatTuFilter =new Filter() {
 
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<PhatTu> filterList = new ArrayList<>();
-            if (constraint==null || constraint.length()==0){
-                filterList.addAll(filterListUser);
-            }else {
-                String filterPartern = constraint.toString().toLowerCase().trim();
-                for (PhatTu phatTu : filterListUser){
-                    if (phatTu.getName().toLowerCase().contains(filterPartern)){
-                        filterList.add(phatTu);
-                    }
-                }
-            }
-            FilterResults filterResults = new FilterResults();
-            filterResults.values =filterList;
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            listUser.clear();
-            listUser.addAll((List)results.values);
-            notifyDataSetChanged();
-        }
-    };
 
     public interface ItemOnclick{
      public void setOnclickItemSelect(int position);

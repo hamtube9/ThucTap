@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                 if ((username.isEmpty()) || (password.isEmpty())) {
                     Toast.makeText(LoginActivity.this, "Hãy điền đầy đủ username và password", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (!username.equals("admin") || !password.equals("12")) {
+                } else if (!username.equals("admin") || !password.equals("1")) {
                     Toast.makeText(LoginActivity.this, "Sai thông tin", Toast.LENGTH_SHORT).show();
 
                 } else {

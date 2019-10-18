@@ -34,6 +34,7 @@ public class AdapterTinh extends RecyclerView.Adapter<AdapterTinh.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvTinh.setText(list.get(position).getTenTinh());
+        holder.idTinh.setText(list.get(position).getId());
     }
 
     @Override
@@ -42,10 +43,11 @@ public class AdapterTinh extends RecyclerView.Adapter<AdapterTinh.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTinh;
+        TextView tvTinh,idTinh;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTinh=itemView.findViewById(R.id.tvTinh);
+            idTinh=itemView.findViewById(R.id.idTinh);
         }
     }
 }

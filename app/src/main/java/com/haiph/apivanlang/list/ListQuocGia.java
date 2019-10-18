@@ -60,10 +60,10 @@ public class ListQuocGia extends AppCompatActivity {
                         JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
                         for (int i=0;i<arrayDulieu.length();i++){
                             JSONObject object = arrayDulieu.getJSONObject(i);
-
+                            int id = object.getInt("id");
                             String ten = object.getString("ten");
-                            QuocGia duLieuThongKe =new QuocGia(ten);
-                            list.add(duLieuThongKe);
+                            QuocGia quocGia =new QuocGia(ten, id);
+                            list.add(quocGia);
                             adapterQuocGia.notifyDataSetChanged();
                         }
                     } catch (IOException e) {

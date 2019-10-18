@@ -33,6 +33,7 @@ public class AdapterQuocGia extends RecyclerView.Adapter<AdapterQuocGia.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvQuocGia.setText(list.get(position).getTenQuocGia());
+        holder.tvidQuocGia.setText(list.get(position).getIdQuocGia());
     }
 
     @Override
@@ -41,10 +42,12 @@ public class AdapterQuocGia extends RecyclerView.Adapter<AdapterQuocGia.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuocGia;
+        TextView tvQuocGia,tvidQuocGia;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             tvQuocGia=itemView.findViewById(R.id.tvQuocGia);
+            tvidQuocGia=itemView.findViewById(R.id.tvidQuocGia);
         }
     }
 }

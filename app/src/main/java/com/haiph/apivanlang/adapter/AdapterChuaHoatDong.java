@@ -34,6 +34,7 @@ public class AdapterChuaHoatDong extends RecyclerView.Adapter<AdapterChuaHoatDon
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvChua.setText(list.get(position).getTenChua());
+        holder.tvidChua.setText(list.get(position).getId());
     }
 
     @Override
@@ -42,11 +43,12 @@ public class AdapterChuaHoatDong extends RecyclerView.Adapter<AdapterChuaHoatDon
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvChua;
+        TextView tvChua,tvidChua;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvChua = itemView.findViewById(R.id.tvChua);
+            tvidChua=itemView.findViewById(R.id.tvidChua);
         }
     }
 }

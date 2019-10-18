@@ -34,7 +34,8 @@ public class AdapterDuLieuThongKe extends RecyclerView.Adapter<AdapterDuLieuThon
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DuLieuThongKe duLieuThongKe = list.get(position);
-        holder.tenSuKien.setText("Tên sự kiện :"+duLieuThongKe.getTenSuKien());
+        holder.tenSuKien.setText(duLieuThongKe.getTenSuKien());
+        holder.idSukien.setText(duLieuThongKe.getId());
 
     }
 
@@ -44,11 +45,12 @@ public class AdapterDuLieuThongKe extends RecyclerView.Adapter<AdapterDuLieuThon
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tenSuKien;
+        TextView tenSuKien,idSukien;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tenSuKien=itemView.findViewById(R.id.tenSuKien);
+            idSukien=itemView.findViewById(R.id.idSuKien);
         }
     }
 }

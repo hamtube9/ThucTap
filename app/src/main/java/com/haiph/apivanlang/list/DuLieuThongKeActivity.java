@@ -56,7 +56,7 @@ public class DuLieuThongKeActivity extends AppCompatActivity {
         Intent i = getIntent();
         String token = i.getStringExtra("token");
 
-        OkHttpService.getService().getDuLieu(token,"2019").enqueue(new Callback<ResponseBody>() {
+        OkHttpService.getService().getDuLieu(token).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
@@ -69,9 +69,9 @@ public class DuLieuThongKeActivity extends AppCompatActivity {
                         JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
                         for (int i=0;i<arrayDulieu.length();i++){
                             JSONObject object = arrayDulieu.getJSONObject(i);
-
-                            String tenSuKien = object.getString("tenSuKien");
-                            DuLieuThongKe duLieuThongKe =new DuLieuThongKe(tenSuKien);
+                          int id = object.getInt("id");
+                            String tenSuKien = object.getString("ten");
+                            DuLieuThongKe duLieuThongKe =new DuLieuThongKe(tenSuKien,id);
                             list.add(duLieuThongKe);
                             adapter.notifyDataSetChanged();
                         }

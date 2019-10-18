@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="Thông tin Phật Tử :"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="20dp" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +62,6 @@
                     android:id="@+id/spinnerSuKien"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:background="#000"
                     android:layout_marginTop="8dp"
 >
                 </Spinner>
@@ -285,7 +284,6 @@
                     <Spinner
                         android:id="@+id/SpinnerQuocGia"
                         android:layout_width="match_parent"
-                        android:background="#000"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"></Spinner>
                 </LinearLayout>
@@ -303,7 +301,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -321,7 +319,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -340,7 +338,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -365,7 +364,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Thông tin Sinh hoạt :"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="20dp" />
 
 
@@ -432,7 +431,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Thông tin Người thân :"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:textSize="20dp" />
 
 

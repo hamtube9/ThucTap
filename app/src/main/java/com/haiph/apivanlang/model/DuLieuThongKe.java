@@ -3,6 +3,7 @@ package com.haiph.apivanlang.model;
 public class DuLieuThongKe {
 
     String tenSuKien;
+    int id;
 
     public String getTenSuKien() {
         return tenSuKien;
@@ -12,8 +13,17 @@ public class DuLieuThongKe {
         this.tenSuKien = tenSuKien;
     }
 
-    public DuLieuThongKe(String tenSuKien) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public DuLieuThongKe(String tenSuKien, int id) {
         this.tenSuKien = tenSuKien;
+        this.id = id;
     }
 
     @Override

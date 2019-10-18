@@ -22,7 +22,7 @@ public class AdapterHuyen extends RecyclerView.Adapter<AdapterHuyen.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.item_huyen, parent, false);
-        return null;
+        return new ViewHolder(view);
     }
 
     public AdapterHuyen(List<Huyen> list, Context context) {
@@ -32,7 +32,8 @@ public class AdapterHuyen extends RecyclerView.Adapter<AdapterHuyen.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-holder.tenHuyen.setText(list.get(position).getTenHuyen());
+        holder.tenHuyen.setText(list.get(position).getTenHuyen());
+        holder.idhuyen.setText(list.get(position).getId());
     }
 
     @Override
@@ -41,9 +42,10 @@ holder.tenHuyen.setText(list.get(position).getTenHuyen());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tenHuyen;
+        TextView tenHuyen,idhuyen;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            idhuyen=itemView.findViewById(R.id.idhuyen);
             tenHuyen=itemView.findViewById(R.id.tenHuyen);
         }
     }

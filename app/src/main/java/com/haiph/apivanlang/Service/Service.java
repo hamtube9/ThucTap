@@ -38,13 +38,13 @@ public interface Service {
     );
 
 
-    @GET("/api/phat-tu/lay-du-lieu-thong-ke/{namDuongLich}")
-    Call<ResponseBody> getDuLieu(@Header("Authorization") String Authorization,
-                                 @Path("namDuongLich") String namDuongLich);
+    @GET("/api/danh-muc/danh-muc-hoat-dong-phat-su")
+    Call<ResponseBody> getDuLieu(@Header("Authorization") String Authorization);
 
     //http://api.testqlpt.vla.vn/
 
-    @GET("/api/danh-muc/danh-muc-hoat-dong-phat-su")
+    //
+    @GET("/api/danh-muc/danh-muc-co-cau-to-chuc")
     Call<ResponseBody> getChuaHoatDong(@Header("Authorization") String Authorization);
 
     @GET("/api/danh-muc/danh-muc-xa")
@@ -59,21 +59,24 @@ public interface Service {
     @GET("/api/danh-muc/danh-muc-quoc-gia")
     Call<ResponseBody> getQuocGia(@Header("Authorization") String Authorization);
 
-    @GET("api/danh-muc/danh-muc-tinh")
+
+    @GET("/api/danh-muc/danh-sach-tinh-theo-quoc-gia")
     Call<ResponseBody> getTinh(@Header("Authorization") String Authorization);
 
 
+    @GET("/api/danh-muc/danh-sach-tinh-theo-quoc-gia/{idQuocGia}")
+    Call<ResponseBody> getTinhTheoId(@Header("Authorization") String Authorization,
+                               @Path("idQuocGia") int idQuocGia);
+
+
+
+
     @Multipart
     @POST("api/anh/upload-anh")
-    Call<ResponseBody> uploadAvatar(@Header("Authorization") String Authorization,
-                                    @Part("description")  RequestBody description,
-                                     @Part MultipartBody.Part Photo
-                                    );
-    @Multipart
-    @POST("api/anh/upload-anh")
-    Call<ResponseBody> uploadPhoto(@Part("description")  RequestBody description,
-                                    @Part MultipartBody.Part Photo
-    );
+    Call<ResponseBody> uploadImage(@Header("Authorization") String Authorization,
+                                   @Part("Status") String status,
+                                   @Part("Message") String message,
+                                   @Part MultipartBody.Part data);
 
     @FormUrlEncoded
     @POST("api/phat-tu/them-moi")

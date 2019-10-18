@@ -34,6 +34,7 @@ public class AdapterXa extends RecyclerView.Adapter<AdapterXa.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvXa.setText(list.get(position).getTenXa());
+        holder.idXa.setText(list.get(position).getId());
 
     }
 
@@ -43,10 +44,11 @@ public class AdapterXa extends RecyclerView.Adapter<AdapterXa.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvXa;
+        TextView tvXa,idXa;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvXa=itemView.findViewById(R.id.tvXa);
+            idXa=itemView.findViewById(R.id.idXa);
         }
     }
 }
