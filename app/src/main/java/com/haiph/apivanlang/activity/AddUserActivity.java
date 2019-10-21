@@ -80,30 +80,22 @@ public class AddUserActivity extends AppCompatActivity {
     private CheckBox checkboxQuyY;
     private Button btnAddUser, btnUploadAvatar;
     private RadioButton rdNam, rdNu, rdKhac;
-
     AdapterDuLieuThongKe adapterDuLieuThongKe;
     List<DuLieuThongKe> duLieuThongKeList = new ArrayList<>();
-
     AdapterHuyen adapterHuyen;
     List<Huyen> huyenList;
-
     AdapterXa adapterXa;
     List<Xa> xaList;
-
     AdapterQuocGia adapterQuocGia;
     List<QuocGia> quocGiaList;
-
     AdapterTinh adapterTinh;
     List<Tinh> tinhList;
-
     AdapterChuaHoatDong adapterChuaHoatDong;
     List<ChuaHoatDong> chuaHoatDongList;
-
     private ImageView UserAvatar, imgDate;
     RadioGroup rdG;
     List<PhatTu> list;
     String gender;
-    int idTinh;
     int positionSpinnerQuocGia, posSpinnerXa, posSpinnerXaNguoiThan, posSpinnerQuan, posSpinnerQuanNguoiThan, posSpinnerSuKien, postChuaHoatDong, posSpinnerNoiSinhHoat, posSpinnerThanhPho, posSpinnerThanhPhoNguoiThan;
     String uriFile;
     int idGender;
@@ -113,10 +105,7 @@ public class AddUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
         initView();
-
-
         list = new ArrayList<>();
-
         imgDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +125,6 @@ public class AddUserActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-
         btnUploadAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,32 +134,25 @@ public class AddUserActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
             }
         });
-
         rdG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                int buttonid = group.getCheckedRadioButtonId();
                 View radioButton = group.findViewById(checkedId);
                 int position = group.indexOfChild(radioButton);
-
                 idGender=buttonid;
                 Log.e("buttonid", buttonid+"");
                 Log.e("buttongender", idGender+"");
-
             }
         });
-
-
         spinnerSuKien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int item = duLieuThongKeList.get(position).getId();
                 posSpinnerSuKien = item;
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerNoiSinhHoat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -181,10 +162,8 @@ public class AddUserActivity extends AppCompatActivity {
                 postChuaHoatDong = item;
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerThanhPhoNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -194,10 +173,8 @@ public class AddUserActivity extends AppCompatActivity {
                 posSpinnerThanhPhoNguoiThan = item;
                 Log.e("pos",posSpinnerThanhPhoNguoiThan+"");
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerThanhPho.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -207,10 +184,8 @@ public class AddUserActivity extends AppCompatActivity {
                 posSpinnerThanhPho = item;
                 Log.e("pos",posSpinnerThanhPho+"");
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerQuocGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -220,12 +195,9 @@ public class AddUserActivity extends AppCompatActivity {
                 int idItem = quocGiaList.get(position).getIdQuocGia();
                 positionSpinnerQuocGia = idItem;
                 Log.e("pos",positionSpinnerQuocGia+"");
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerQuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -236,10 +208,8 @@ public class AddUserActivity extends AppCompatActivity {
                 Log.e("pos",posSpinnerQuan+"");
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerQuanNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -250,10 +220,8 @@ public class AddUserActivity extends AppCompatActivity {
                 Log.e("pos",posSpinnerQuanNguoiThan+"");
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerXa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -262,12 +230,9 @@ public class AddUserActivity extends AppCompatActivity {
                 int item = xaList.get(position).getId();
                 posSpinnerXa = item;
                 Log.e("pos",posSpinnerXa+"");
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerXaNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -278,10 +243,8 @@ public class AddUserActivity extends AppCompatActivity {
                 Log.e("pos",posSpinnerXaNguoiThan+"");
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         SpinnerNoiSinhHoat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -290,24 +253,18 @@ public class AddUserActivity extends AppCompatActivity {
                 int item = chuaHoatDongList.get(position).getId();
                 posSpinnerNoiSinhHoat = item;
                 Log.e("pos",posSpinnerNoiSinhHoat+"");
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
-
         getSuKien();
         getQuocGia();
         getTinh();
         getHuyen();
         getXa();
         getChuaHoatDong();
-
-
         btnAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,7 +297,6 @@ public class AddUserActivity extends AppCompatActivity {
                 String anh = uriFile;
                 Log.e("dataImage",anh+"");
                 PhatTu phatTu = new PhatTu(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, gender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,anh);
-
                 Log.e("phatTu", phatTu.toString());
                 list.add(phatTu);
                 AddUser(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, String.valueOf(gender), quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,anh);
@@ -369,22 +325,17 @@ public class AddUserActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-
                     try {
                         String dulieu = response.body().string();
                         JSONObject objectDuLieu = new JSONObject(dulieu);
                         JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
                         for (int i = 0; i < arrayDulieu.length(); i++) {
                             JSONObject object = arrayDulieu.getJSONObject(i);
-
                             String chua = object.getString("ten");
                             int id = object.getInt("id");
-
                             ChuaHoatDong chuaHoatDong = new ChuaHoatDong(chua,id);
-
                             chuaHoatDongList.add(chuaHoatDong);
                             adapterChuaHoatDong.notifyDataSetChanged();
-
                             ArrayAdapter<ChuaHoatDong> dataAdapter = new ArrayAdapter(getApplication(),
                                     android.R.layout.simple_spinner_item, chuaHoatDongList);
                             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -395,13 +346,10 @@ public class AddUserActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }
@@ -415,7 +363,6 @@ public class AddUserActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-
                     try {
                         String dulieu = response.body().string();
                         JSONObject objectDuLieu = new JSONObject(dulieu);
@@ -423,7 +370,6 @@ public class AddUserActivity extends AppCompatActivity {
                         for (int i = 0; i < arrayDulieu.length(); i++) {
                             JSONObject object = arrayDulieu.getJSONObject(i);
                             int id = object.getInt("id");
-
                             String tenXa = object.getString("ten");
                             Xa quocGia = new Xa(tenXa,id);
                             xaList.add(quocGia);
@@ -439,13 +385,10 @@ public class AddUserActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }
@@ -453,15 +396,12 @@ public class AddUserActivity extends AppCompatActivity {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
         String token = "Bearer " + data;
-
         huyenList = new ArrayList<>();
-
         adapterHuyen = new AdapterHuyen(huyenList, getApplicationContext());
         RetrofitService.getInstance().getHuyen(token).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-
                     try {
                         String dulieu = response.body().string();
                         JSONObject objectDuLieu = new JSONObject(dulieu);
@@ -478,20 +418,16 @@ public class AddUserActivity extends AppCompatActivity {
                             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             SpinnerQuan.setAdapter(dataAdapter);
                             SpinnerQuanNguoiThan.setAdapter(dataAdapter);
-
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }
@@ -499,16 +435,12 @@ public class AddUserActivity extends AppCompatActivity {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
         String token = "Bearer " + data;
-
-
-
         tinhList = new ArrayList<>();
         adapterTinh = new AdapterTinh(tinhList, getApplicationContext());
         RetrofitService.getInstance().getTinh(token, 57).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-
                     try {
                         String dulieu = response.body().string();
                         JSONObject objectDuLieu = new JSONObject(dulieu);
@@ -516,12 +448,10 @@ public class AddUserActivity extends AppCompatActivity {
                         for (int i = 0; i < arrayDulieu.length(); i++) {
                             JSONObject object = arrayDulieu.getJSONObject(i);
                             int id = object.getInt("id");
-
                             String tenTinh = object.getString("ten");
                             Tinh quocGia = new Tinh(tenTinh,id);
                             tinhList.add(quocGia);
                             adapterTinh.notifyDataSetChanged();
-
                             ArrayAdapter<Tinh> dataAdapter = new ArrayAdapter(getApplication(),
                                     android.R.layout.simple_spinner_item, tinhList);
                             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -533,13 +463,10 @@ public class AddUserActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }
@@ -549,43 +476,33 @@ public class AddUserActivity extends AppCompatActivity {
         String token = "Bearer " + data;
         quocGiaList = new ArrayList<>();
         adapterQuocGia = new AdapterQuocGia(quocGiaList, getApplicationContext());
-
-
         RetrofitService.getInstance().getQuocGia(token).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-
                     try {
                         String dulieu = response.body().string();
                         JSONObject objectDuLieu = new JSONObject(dulieu);
                         JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
                         for (int i = 0; i < arrayDulieu.length(); i++) {
                             JSONObject object = arrayDulieu.getJSONObject(i);
-
                              int idQuocGia = object.getInt("id");
                             String ten = object.getString("ten");
-
                             QuocGia quocGia = new QuocGia(ten, idQuocGia);
                             quocGiaList.add(quocGia);
                             adapterQuocGia.notifyDataSetChanged();
-
                             ArrayAdapter<QuocGia> dataAdapter = new ArrayAdapter(getApplication(),
                                     android.R.layout.simple_spinner_item, quocGiaList);
                             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             SpinnerQuocGia.setAdapter(dataAdapter);
-
-
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -596,9 +513,7 @@ public class AddUserActivity extends AppCompatActivity {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
         String token = "Bearer " + data;
-
         adapterDuLieuThongKe = new AdapterDuLieuThongKe(duLieuThongKeList, getApplicationContext());
-
         RetrofitService.getInstance().getDuLieu(token).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -610,28 +525,23 @@ public class AddUserActivity extends AppCompatActivity {
                         JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
                         for (int i = 0; i < arrayDulieu.length(); i++) {
                             JSONObject object = arrayDulieu.getJSONObject(i);
-
                             int id = object.getInt("id");
                             String tenSuKien = object.getString("ten");
                             DuLieuThongKe duLieuThongKe = new DuLieuThongKe(tenSuKien,id);
                             duLieuThongKeList.add(duLieuThongKe);
                             adapterDuLieuThongKe.notifyDataSetChanged();
-
                             ArrayAdapter<DuLieuThongKe> dataAdapter = new ArrayAdapter(getApplication(),
                                     android.R.layout.simple_spinner_item, duLieuThongKeList);
                             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerSuKien.setAdapter(dataAdapter);
-
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -645,7 +555,6 @@ public class AddUserActivity extends AppCompatActivity {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
         String token = "Bearer " + data;
-
         Log.e("tokenAddUser", "token : " + token);
         RetrofitService.getInstance().postNewPhatTu(token, ID, "", "",
                 quocGia, hoVaDem, ten, phapDanh, this.gender, ngaySinh, soDienThoai, diaChi, xa,
@@ -661,7 +570,6 @@ public class AddUserActivity extends AppCompatActivity {
                     Log.e("response", String.valueOf(response.body()));
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("loiAddUser", t.getMessage());
@@ -678,10 +586,7 @@ public class AddUserActivity extends AppCompatActivity {
             uploadFile(uri);
             UserAvatar.setImageURI(uri);
             tvGetContent.setText(String.valueOf(uri));
-
         }
-
-
         if (resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
@@ -691,9 +596,7 @@ public class AddUserActivity extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     private void initView() {
@@ -732,7 +635,6 @@ public class AddUserActivity extends AppCompatActivity {
         SpinnerQuanNguoiThan = findViewById(R.id.SpinnerQuanNguoiThan);
         SpinnerXaNguoiThan = findViewById(R.id.SpinnerXaNguoiThan);
         SpinnerThanhPhoNguoiThan = findViewById(R.id.SpinnerThanhPhoNguoiThan);
-
     }
 
 
@@ -770,7 +672,6 @@ public class AddUserActivity extends AppCompatActivity {
 
     }
 
-
     private void uploadFile(Uri fileUri) {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
@@ -787,10 +688,8 @@ public class AddUserActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code()==200){
                     Toast.makeText(AddUserActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -798,13 +697,4 @@ public class AddUserActivity extends AppCompatActivity {
         });
 
     }
-
-    private byte[] ImageViewChange(ImageView imageView) {
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
-
 }
