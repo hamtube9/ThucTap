@@ -15,7 +15,7 @@ public class PhatTu {
     String SDTNguoiThan;
     String DiaChiNguoiThan;
     String NgaySinh;
-    String gender;
+    int gender;
     String QuocGia;
     String Tinh;
     String Quan;
@@ -25,9 +25,17 @@ public class PhatTu {
     String tinhNguoiThan;
     String ChuaHoatDong;
     String SuKien;
-    byte[] anh;
+    String anh;
 
-    public PhatTu(String hoVaDem, String name, String phapDanh, String diachi, String dienthoai, String CMT, String id, String email, String nguoiBaoLanh, String SDTNguoiBaoLanh, String nguoiThan, String SDTNguoiThan, String diaChiNguoiThan, String ngaySinh, String gender, String quocGia, String tinh, String quan, String xa, String quanNguoiThan, String xaNguoiThan, String tinhNguoiThan, String chuaHoatDong, String suKien, byte[] anh) {
+    public String getAnh() {
+        return anh;
+    }
+
+    public void setAnh(String anh) {
+        this.anh = anh;
+    }
+
+    public PhatTu(String hoVaDem, String name, String phapDanh, String diachi, String dienthoai, String CMT, String id, String email, String nguoiBaoLanh, String SDTNguoiBaoLanh, String nguoiThan, String SDTNguoiThan, String diaChiNguoiThan, String ngaySinh, int gender, String quocGia, String tinh, String quan, String xa, String quanNguoiThan, String xaNguoiThan, String tinhNguoiThan, String chuaHoatDong, String suKien, String anh) {
         this.HoVaDem = hoVaDem;
         this.name = name;
         this.phapDanh = phapDanh;
@@ -81,13 +89,14 @@ public class PhatTu {
 
 
 
-    public PhatTu(String name, String phapdanh, String diachi, String dienthoai, String cmt, String id) {
+    public PhatTu(String name, String phapdanh, String diachi, String dienthoai, String cmt, String id,String anh) {
         this.name = name;
         this.phapDanh = phapdanh;
         this.diachi = diachi;
         this.dienthoai = dienthoai;
         this.CMT = cmt;
         this.id = id;
+        this.anh=anh;
     }
 
     public String getNgaySinh() {
@@ -98,11 +107,11 @@ public class PhatTu {
         NgaySinh = ngaySinh;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 

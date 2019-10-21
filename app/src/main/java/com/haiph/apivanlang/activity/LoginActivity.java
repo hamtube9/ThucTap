@@ -126,7 +126,6 @@ public class LoginActivity extends AppCompatActivity {
                 editor = sharedPreferences.edit();
                 editor.putString("username", response.body().getUserName());
                 token = String.valueOf(editor.putString("token",""+response.body().getAccessToken()));
-
                 editor.commit();
                 Log.e("token",""+token);
                 Log.e("username",""+response.body().getUserName());

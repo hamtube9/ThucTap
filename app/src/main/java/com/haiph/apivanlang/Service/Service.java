@@ -60,13 +60,10 @@ public interface Service {
     Call<ResponseBody> getQuocGia(@Header("Authorization") String Authorization);
 
 
-    @GET("/api/danh-muc/danh-sach-tinh-theo-quoc-gia")
-    Call<ResponseBody> getTinh(@Header("Authorization") String Authorization);
-
-
     @GET("/api/danh-muc/danh-sach-tinh-theo-quoc-gia/{idQuocGia}")
-    Call<ResponseBody> getTinhTheoId(@Header("Authorization") String Authorization,
+    Call<ResponseBody> getTinh(@Header("Authorization") String Authorization,
                                @Path("idQuocGia") int idQuocGia);
+
 
 
 
@@ -95,7 +92,7 @@ public interface Service {
                                      @Field("IdXa") String idXa,
                                      @Field("IdHuyen") String idHuyen,
                                      @Field("IdTinh") String idTinh,
-                                     @Field("Email") String email,
+                                     @Field("Email") String Email,
                                      @Field("NgheNghiep") String ngheNghiep,
                                      @Field("NguoiThan_HoVaTen") String nguoiThan_HoVaTen,
                                      @Field("NguoiThan_SoDienThoai") String nguoiThan_SoDienThoai,
@@ -144,7 +141,7 @@ public interface Service {
                                       @Field("IdXa") String idXa,
                                       @Field("IdHuyen") String idHuyen,
                                       @Field("IdTinh") String idTinh,
-                                      @Field("Email") String email,
+                                      @Field("Email") String Email,
                                       @Field("NgheNghiep") String ngheNghiep,
                                       @Field("NguoiThan_HoVaTen") String nguoiThan_HoVaTen,
                                       @Field("NguoiThan_SoDienThoai") String nguoiThan_SoDienThoai,

@@ -73,7 +73,7 @@ import retrofit2.Response;
 public class AddUserActivity extends AppCompatActivity {
     private Toolbar toolbar;
     final int PICK_IMAGE_REQUEST = 1;
-    TextView tvSuKien;
+    TextView tvSuKien,tvGetContent;
     Spinner spinnerSuKien, SpinnerQuocGia, SpinnerThanhPho, SpinnerQuan, SpinnerXa, SpinnerNoiSinhHoat, SpinnerQuanNguoiThan, SpinnerXaNguoiThan, SpinnerThanhPhoNguoiThan;
     private EditText edtHoVaDem, edtTenUser, edtDiaChi, edtSoDienThoai, edtPhapDanh, edtCMT, edtID,
             edtEmail, edtNgaySinh, edtNguoiBaoLanh, edtSDTNguoiBaoLanh, edtTenNguoiThan, edtSDTNguoiThan, edtDiaChiNguoiThan;
@@ -105,6 +105,8 @@ public class AddUserActivity extends AppCompatActivity {
     String gender;
     int idTinh;
     int positionSpinnerQuocGia, posSpinnerXa, posSpinnerXaNguoiThan, posSpinnerQuan, posSpinnerQuanNguoiThan, posSpinnerSuKien, postChuaHoatDong, posSpinnerNoiSinhHoat, posSpinnerThanhPho, posSpinnerThanhPhoNguoiThan;
+    String uriFile;
+    int idGender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,9 +114,6 @@ public class AddUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_user);
         initView();
 
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        final String token = "Bearer " + data;
 
         list = new ArrayList<>();
 
@@ -151,18 +150,14 @@ public class AddUserActivity extends AppCompatActivity {
         rdG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rdNam:
-                        gender = rdNam.getText().toString();
-                        break;
-                    case R.id.rdNu:
-                        gender = rdNu.getText().toString();
-                        break;
+               int buttonid = group.getCheckedRadioButtonId();
+                View radioButton = group.findViewById(checkedId);
+                int position = group.indexOfChild(radioButton);
 
-                    case R.id.rdKhac:
-                        gender = rdKhac.getText().toString();
-                        break;
-                }
+                idGender=buttonid;
+                Log.e("buttonid", buttonid+"");
+                Log.e("buttongender", idGender+"");
+
             }
         });
 
@@ -172,47 +167,6 @@ public class AddUserActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int item = duLieuThongKeList.get(position).getId();
                 posSpinnerSuKien = item;
-                if (spinnerSuKien.getSelectedItem().equals(duLieuThongKeList.get(position))){
-                    RetrofitService.getInstance().getTinhTheoId(token,item).enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()) {
-
-                                try {
-                                    String dulieu = response.body().string();
-                                    JSONObject objectDuLieu = new JSONObject(dulieu);
-                                    JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
-                                    for (int i = 0; i < arrayDulieu.length(); i++) {
-                                        JSONObject object = arrayDulieu.getJSONObject(i);
-                                        int id = object.getInt("id");
-
-                                        String tenTinh = object.getString("ten");
-                                        Tinh quocGia = new Tinh(tenTinh,id);
-                                        tinhList.add(quocGia);
-                                        adapterTinh.notifyDataSetChanged();
-
-                                        ArrayAdapter<Tinh> dataAdapter = new ArrayAdapter(getApplication(),
-                                                android.R.layout.simple_spinner_item, tinhList);
-                                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                        SpinnerThanhPho.setAdapter(dataAdapter);
-                                        SpinnerThanhPhoNguoiThan.setAdapter(dataAdapter);
-                                    }
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                        }
-                    });
-
-                }
             }
 
             @Override
@@ -348,7 +302,7 @@ public class AddUserActivity extends AppCompatActivity {
 
         getSuKien();
         getQuocGia();
-     //   getTinh();
+        getTinh();
         getHuyen();
         getXa();
         getChuaHoatDong();
@@ -357,14 +311,9 @@ public class AddUserActivity extends AppCompatActivity {
         btnAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (rdNam.isChecked()) {
-                    gender = "Nam";
-                } else if (rdNu.isChecked()) {
-                    gender = "Nữ";
-                } else if (rdKhac.isChecked()) {
-                    gender = "Khác";
-                }
+                validate();
+                int gender = idGender;
+                Log.e("idgender",gender+"");
                 String ID = edtID.getText().toString();
                 String hoVaDem = edtHoVaDem.getText().toString();
                 String Ten = edtTenUser.getText().toString();
@@ -388,14 +337,13 @@ public class AddUserActivity extends AppCompatActivity {
                 String xaNguoiThan = String.valueOf(posSpinnerXaNguoiThan);
                 String chuaHoatDong = String.valueOf(postChuaHoatDong);
                 String sukien = String.valueOf(posSpinnerSuKien);
-                String img = String.valueOf(ImageViewChange(UserAvatar));
-                Log.e("img",img);
-                PhatTu phatTu = new PhatTu(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, gender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,ImageViewChange(UserAvatar));
+                String anh = uriFile;
+                Log.e("dataImage",anh+"");
+                PhatTu phatTu = new PhatTu(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, gender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,anh);
 
                 Log.e("phatTu", phatTu.toString());
                 list.add(phatTu);
-                Log.e("list", "" + list.add(phatTu));
-                AddUser(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, gender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,ImageViewChange(UserAvatar));
+                AddUser(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, String.valueOf(gender), quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,anh);
                 Intent i = new Intent(AddUserActivity.this, ListUserActivity.class);
                 Intent intent = getIntent();
                 String token = intent.getStringExtra("token1");
@@ -417,7 +365,6 @@ public class AddUserActivity extends AppCompatActivity {
         Log.e("bearer", token + "");
         chuaHoatDongList = new ArrayList<>();
         adapterChuaHoatDong = new AdapterChuaHoatDong(chuaHoatDongList, getApplicationContext());
-
         RetrofitService.getInstance().getChuaHoatDong(token).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -481,7 +428,6 @@ public class AddUserActivity extends AppCompatActivity {
                             Xa quocGia = new Xa(tenXa,id);
                             xaList.add(quocGia);
                             adapterXa.notifyDataSetChanged();
-
                             ArrayAdapter<Xa> dataAdapter = new ArrayAdapter(getApplication(),
                                     android.R.layout.simple_spinner_item, xaList);
                             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -549,55 +495,54 @@ public class AddUserActivity extends AppCompatActivity {
             }
         });
     }
-//    private void getTinh() {
-//        Intent i = getIntent();
-//        String data = i.getStringExtra("token1");
-//        String token = "Bearer " + data;
-//
-//
-//
-//
-//        tinhList = new ArrayList<>();
-//        adapterTinh = new AdapterTinh(tinhList, getApplicationContext());
-//        RetrofitService.getInstance().getTinh(token).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                if (response.isSuccessful()) {
-//
-//                    try {
-//                        String dulieu = response.body().string();
-//                        JSONObject objectDuLieu = new JSONObject(dulieu);
-//                        JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
-//                        for (int i = 0; i < arrayDulieu.length(); i++) {
-//                            JSONObject object = arrayDulieu.getJSONObject(i);
-//                            int id = object.getInt("id");
-//
-//                            String tenTinh = object.getString("ten");
-//                            Tinh quocGia = new Tinh(tenTinh,id);
-//                            tinhList.add(quocGia);
-//                            adapterTinh.notifyDataSetChanged();
-//
-//                            ArrayAdapter<Tinh> dataAdapter = new ArrayAdapter(getApplication(),
-//                                    android.R.layout.simple_spinner_item, tinhList);
-//                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                            SpinnerThanhPho.setAdapter(dataAdapter);
-//                            SpinnerThanhPhoNguoiThan.setAdapter(dataAdapter);
-//                        }
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//            }
-//        });
-//    }
+    private void getTinh() {
+        Intent i = getIntent();
+        String data = i.getStringExtra("token1");
+        String token = "Bearer " + data;
+
+
+
+        tinhList = new ArrayList<>();
+        adapterTinh = new AdapterTinh(tinhList, getApplicationContext());
+        RetrofitService.getInstance().getTinh(token, 57).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+
+                    try {
+                        String dulieu = response.body().string();
+                        JSONObject objectDuLieu = new JSONObject(dulieu);
+                        JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
+                        for (int i = 0; i < arrayDulieu.length(); i++) {
+                            JSONObject object = arrayDulieu.getJSONObject(i);
+                            int id = object.getInt("id");
+
+                            String tenTinh = object.getString("ten");
+                            Tinh quocGia = new Tinh(tenTinh,id);
+                            tinhList.add(quocGia);
+                            adapterTinh.notifyDataSetChanged();
+
+                            ArrayAdapter<Tinh> dataAdapter = new ArrayAdapter(getApplication(),
+                                    android.R.layout.simple_spinner_item, tinhList);
+                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            SpinnerThanhPho.setAdapter(dataAdapter);
+                            SpinnerThanhPhoNguoiThan.setAdapter(dataAdapter);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
     public void getQuocGia() {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
@@ -696,20 +641,19 @@ public class AddUserActivity extends AppCompatActivity {
 
     }
 
-    private void AddUser(final String hoVaDem, final String ten, final String phapDanh, final String diaChi, final String soDienThoai, final String CMT, final String ID, final String email, final String nguoiBaoLanh, final String SDTnguoiBaoLanh, final String nguoiThan, final String SDTnguoiThan, final String diaChiNguoiThan, final String ngaySinh, final String gender, final String quocGia, final String tinh, final String quan, final String xa, final String quanNguoiThan, final String xaNguoiThan, final String tinhNguoiThan, final String chuaHoatDong, final String sukien, byte[] bytes) {
+    private void AddUser(final String hoVaDem, final String ten, final String phapDanh, final String diaChi, final String soDienThoai, final String CMT, final String ID, final String email, final String nguoiBaoLanh, final String SDTnguoiBaoLanh, final String nguoiThan, final String SDTnguoiThan, final String diaChiNguoiThan, final String ngaySinh, final String gender, final String quocGia, final String tinh, final String quan, final String xa, final String quanNguoiThan, final String xaNguoiThan, final String tinhNguoiThan, final String chuaHoatDong, final String sukien, String anh) {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
         String token = "Bearer " + data;
 
         Log.e("tokenAddUser", "token : " + token);
-        RetrofitService.getInstance().postNewPhatTu(token, ID, bytes.toString(), "", quocGia, hoVaDem
-                , ten, phapDanh, this.gender, ngaySinh, soDienThoai, diaChi, xa,
-                quan, tinh, email, "", nguoiThan,
-                SDTnguoiThan, diaChiNguoiThan, xaNguoiThan, quanNguoiThan,
-                tinhNguoiThan, "", "", "", "",
+        RetrofitService.getInstance().postNewPhatTu(token, ID, "", "",
+                quocGia, hoVaDem, ten, phapDanh, this.gender, ngaySinh, soDienThoai, diaChi, xa,
+                quan, tinh, email, "", nguoiThan, SDTnguoiThan, diaChiNguoiThan, xaNguoiThan,
+                quanNguoiThan, tinhNguoiThan, "", "", "", "",
                 "", "", "", "", nguoiBaoLanh, SDTnguoiBaoLanh,
-                chuaHoatDong, "", CMT, "",
-                "", "", "", "", "").enqueue(new Callback<ResponseBody>() {
+                chuaHoatDong, "", CMT, anh, "", "", "", "", "")
+                .enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -733,6 +677,8 @@ public class AddUserActivity extends AppCompatActivity {
             Uri uri = data.getData();
             uploadFile(uri);
             UserAvatar.setImageURI(uri);
+            tvGetContent.setText(String.valueOf(uri));
+
         }
 
 
@@ -766,9 +712,9 @@ public class AddUserActivity extends AppCompatActivity {
         btnUploadAvatar = findViewById(R.id.btnUploadAvatar);
         UserAvatar = findViewById(R.id.UserAvatar);
         imgDate = findViewById(R.id.imgDate);
-        tvSuKien = findViewById(R.id.tvSuKien);
         checkboxQuyY = findViewById(R.id.checkboxQuyY);
-
+        tvSuKien = findViewById(R.id.tvSuKien);
+        tvGetContent = findViewById(R.id.tvGetContent);
         initEdit();
         initSpinner();
         rdKhac = findViewById(R.id.rdKhac);
@@ -807,6 +753,22 @@ public class AddUserActivity extends AppCompatActivity {
         edtSDTNguoiThan = findViewById(R.id.edtSDTNguoiThan);
         edtDiaChiNguoiThan = findViewById(R.id.edtDiaChiNguoiThan);
     }
+    public void validate(){
+        if (edtCMT.equals("")){
+            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if (edtTenUser.equals("")){
+            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if (edtNgaySinh.equals("")){
+
+            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+    }
 
 
     private void uploadFile(Uri fileUri) {
@@ -814,12 +776,19 @@ public class AddUserActivity extends AppCompatActivity {
         String data = i.getStringExtra("token1");
         String token = "Bearer " + data;
         File orifile = FileUtils.getFile(getApplicationContext(), fileUri);
+        Log.e("urifile",orifile.getName()+"");
+        Log.e("urifile",orifile.toString()+"");
+        Log.e("urifile",orifile.toURI().toString()+"");
+        uriFile = orifile.getName();
         RequestBody filePart = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), orifile);
         MultipartBody.Part file = MultipartBody.Part.createFormData("data", orifile.getName(), filePart);
         RetrofitService.getInstance().uploadImage(token, "", "", file).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(AddUserActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                if (response.code()==200){
+                    Toast.makeText(AddUserActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                }
             }
 
             @Override

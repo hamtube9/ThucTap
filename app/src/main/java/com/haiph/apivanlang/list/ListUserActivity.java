@@ -128,7 +128,7 @@ public class ListUserActivity extends AppCompatActivity {
 //
 //        service = retrofit.create(Service.class);
 
-            RetrofitService.getInstance().getFromDateToDate(tokenList,"2019-08-01","2019-10-20").enqueue(new Callback<ResponseBody>() {
+            RetrofitService.getInstance().getFromDateToDate(tokenList,"2019-08-01","2019-10-30").enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()){
@@ -147,8 +147,10 @@ public class ListUserActivity extends AppCompatActivity {
                                 String dienthoai = object.getString("soDienThoai");
                                 String cmt = object.getString("socmtnd");
                                 String phapdanh = object.getString("phapDanh");
-                                Log.e("nameOb", "name : " + name + "/n id " + id + "/n địa chỉ : " + diachi + "/n điện thoại " + dienthoai);
-                                phatTu = new PhatTu(name, phapdanh, diachi, dienthoai, cmt, id);
+                                String anh = object.getString("linkAnhDaiDien");
+                                Log.e("anhdaidien",anh+"");
+                             //   Log.e("nameOb", "name : " + name + "/n id " + id + "/n địa chỉ : " + diachi + "/n điện thoại " + dienthoai+" /n ảnh :"+anh);
+                                phatTu = new PhatTu(name, phapdanh, diachi, dienthoai, cmt, id,anh);
 
                                 list.add(phatTu);
 
