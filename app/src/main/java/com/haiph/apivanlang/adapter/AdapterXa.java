@@ -33,7 +33,7 @@ public class AdapterXa extends RecyclerView.Adapter<AdapterXa.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvXa.setText(list.get(position).getTenXa());
+        holder.tvXa.setText(list.get(position).getTen());
         holder.idXa.setText(list.get(position).getId());
 
     }

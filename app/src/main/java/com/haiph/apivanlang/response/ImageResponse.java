@@ -10,8 +10,6 @@ public class ImageResponse extends BaseResponse {
 
     @Override
     public String toString() {
-        return "ImageResponse{" +
-                "data='" + data + '\'' +
-                '}';
+        return  data;
     }
 }

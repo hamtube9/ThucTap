@@ -7,11 +7,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +30,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.haiph.apivanlang.R;
-import com.haiph.apivanlang.Service.OkHttpService;
 import com.haiph.apivanlang.Service.RetrofitService;
 import com.haiph.apivanlang.adapter.AdapterChuaHoatDong;
 import com.haiph.apivanlang.adapter.AdapterDuLieuThongKe;
@@ -45,6 +48,10 @@ import com.haiph.apivanlang.model.PhatTu;
 import com.haiph.apivanlang.model.QuocGia;
 import com.haiph.apivanlang.model.Tinh;
 import com.haiph.apivanlang.model.Xa;
+import com.haiph.apivanlang.response.HuyenResponse;
+import com.haiph.apivanlang.response.ImageResponse;
+import com.haiph.apivanlang.response.TinhResponse;
+import com.haiph.apivanlang.response.XaResponse;
 import com.haiph.apivanlang.utils.FileUtils;
 
 import org.json.JSONArray;
@@ -57,6 +64,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,132 +78,92 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddUserActivity extends AppCompatActivity {
+public class AddUserActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private Toolbar toolbar;
     final int PICK_IMAGE_REQUEST = 1;
-    TextView tvSuKien,tvGetContent;
-    Spinner spinnerSuKien, SpinnerQuocGia, SpinnerThanhPho, SpinnerQuan, SpinnerXa, SpinnerNoiSinhHoat, SpinnerQuanNguoiThan, SpinnerXaNguoiThan, SpinnerThanhPhoNguoiThan;
+    private TextView tvSuKien, tvGetContent;
+    private Spinner spinnerSuKien, SpinnerQuocGia, SpinnerThanhPho, SpinnerQuan, SpinnerXa, SpinnerNoiSinhHoat, SpinnerQuanNguoiThan,
+            SpinnerXaNguoiThan, SpinnerThanhPhoNguoiThan;
     private EditText edtHoVaDem, edtTenUser, edtDiaChi, edtSoDienThoai, edtPhapDanh, edtCMT, edtID,
-            edtEmail, edtNgaySinh, edtNguoiBaoLanh, edtSDTNguoiBaoLanh, edtTenNguoiThan, edtSDTNguoiThan, edtDiaChiNguoiThan;
+            edtEmail, edtNgaySinh, edtNguoiBaoLanh, edtSDTNguoiBaoLanh, edtTenNguoiThan, edtSDTNguoiThan, edtDiaChiNguoiThan, edtGhiChu;
     private CheckBox checkboxQuyY;
     private Button btnAddUser, btnUploadAvatar;
     private RadioButton rdNam, rdNu, rdKhac;
-    AdapterDuLieuThongKe adapterDuLieuThongKe;
-    List<DuLieuThongKe> duLieuThongKeList = new ArrayList<>();
-    AdapterHuyen adapterHuyen;
-    List<Huyen> huyenList;
-    AdapterXa adapterXa;
-    List<Xa> xaList;
-    AdapterQuocGia adapterQuocGia;
-    List<QuocGia> quocGiaList;
-    AdapterTinh adapterTinh;
-    List<Tinh> tinhList;
-    AdapterChuaHoatDong adapterChuaHoatDong;
-    List<ChuaHoatDong> chuaHoatDongList;
+    private AdapterDuLieuThongKe adapterDuLieuThongKe;
+    private List<DuLieuThongKe> duLieuThongKeList = new ArrayList<>();
+    private AdapterHuyen adapterHuyen;
+    private List<Huyen> huyenList = new ArrayList<>();
+    private AdapterXa adapterXa;
+    private List<Xa> xaList = new ArrayList<>();
+    private AdapterQuocGia adapterQuocGia;
+    private List<QuocGia> quocGiaList = new ArrayList<>();
+    private AdapterTinh adapterTinh;
+    private List<Tinh> tinhList = new ArrayList<>();
+    private AdapterChuaHoatDong adapterChuaHoatDong;
+    private List<ChuaHoatDong> chuaHoatDongList = new ArrayList<>();
     private ImageView UserAvatar, imgDate;
-    RadioGroup rdG;
-    List<PhatTu> list;
-    String gender;
+    private RadioGroup rdG;
+    private List<PhatTu> list = new ArrayList<>();
+    private String gender;
     int positionSpinnerQuocGia, posSpinnerXa, posSpinnerXaNguoiThan, posSpinnerQuan, posSpinnerQuanNguoiThan, posSpinnerSuKien, postChuaHoatDong, posSpinnerNoiSinhHoat, posSpinnerThanhPho, posSpinnerThanhPhoNguoiThan;
-    String uriFile;
+    private String uriFile;
     int idGender;
+    private Uri uri;
+    String ID, hoVaDem, Ten, DiaChi, SoDienThoai, PhapDanh, email, ngaySinh, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, CMT, quocGia;
+    String tinh, tinhNguoiThan, quan, quanNguoiThan, xa, xaNguoiThan, chuaHoatDong, sukien, anh, ghichu;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
         initView();
+        Intent i = getIntent();
+        String data = i.getStringExtra("token1");
+        token = "Bearer " + data;
         list = new ArrayList<>();
-        imgDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                int thang, nam, ngay;
-                ngay = c.get(Calendar.DATE);
-                thang = c.get(Calendar.MONTH);
-                nam = c.get(Calendar.YEAR);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddUserActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        c.set(year, month, dayOfMonth);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
-                        edtNgaySinh.setText(simpleDateFormat.format(c.getTime()));
-                    }
-                }, nam, thang, ngay);
-                datePickerDialog.show();
-            }
-        });
-        btnUploadAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-            }
-        });
         rdG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-               int buttonid = group.getCheckedRadioButtonId();
-                View radioButton = group.findViewById(checkedId);
-                int position = group.indexOfChild(radioButton);
-                idGender=buttonid;
-                Log.e("buttonid", buttonid+"");
-                Log.e("buttongender", idGender+"");
+                if (rdNam.isChecked()) {
+                    idGender = 1;
+                } else if (rdNu.isChecked()) {
+                    idGender = 2;
+                } else if (rdKhac.isChecked()) {
+                    idGender = 3;
+                }
+                Log.e("idGender", idGender + "");
             }
         });
-        spinnerSuKien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = duLieuThongKeList.get(position).getId();
-                posSpinnerSuKien = item;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        SpinnerNoiSinhHoat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = chuaHoatDongList.get(position).getId();
-                postChuaHoatDong = item;
 
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        SpinnerThanhPhoNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = tinhList.get(position).getId();
-                posSpinnerThanhPhoNguoiThan = item;
-                Log.e("pos",posSpinnerThanhPhoNguoiThan+"");
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        SpinnerThanhPho.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = tinhList.get(position).getId();
-                posSpinnerThanhPho = item;
-                Log.e("pos",posSpinnerThanhPho+"");
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+
         SpinnerQuocGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                int idItem = quocGiaList.get(position).getIdQuocGia();
-                positionSpinnerQuocGia = idItem;
-                Log.e("pos",positionSpinnerQuocGia+"");
+                int idItemQuocGia = quocGiaList.get(position).getIdQuocGia();
+                positionSpinnerQuocGia = idItemQuocGia;
+                getTinh(idItemQuocGia);
+                Log.e("idItemQuocGia", idItemQuocGia + "");
+
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        SpinnerThanhPho.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int itemTinh = tinhList.get(position).getId();
+                posSpinnerThanhPho = itemTinh;
+                getHuyen(itemTinh);
+
+                Log.e("posThanhPho", itemTinh + "");
+
+            }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -203,23 +171,12 @@ public class AddUserActivity extends AppCompatActivity {
         SpinnerQuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = huyenList.get(position).getId();
-                posSpinnerQuan = item;
-                Log.e("pos",posSpinnerQuan+"");
+                int itemQuan = huyenList.get(position).getId();
+                posSpinnerQuan = itemQuan;
+                getXa(itemQuan);
+                Log.e("pos", posSpinnerQuan + "");
+            }
 
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        SpinnerQuanNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = huyenList.get(position).getId();
-                posSpinnerQuanNguoiThan = item;
-                Log.e("pos",posSpinnerQuanNguoiThan+"");
-
-            }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -227,10 +184,37 @@ public class AddUserActivity extends AppCompatActivity {
         SpinnerXa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = xaList.get(position).getId();
-                posSpinnerXa = item;
-                Log.e("pos",posSpinnerXa+"");
+                int itemXa = xaList.get(position).getId();
+                posSpinnerXa = itemXa;
+                Log.e("pos", posSpinnerXa + "");
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        SpinnerThanhPhoNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int itemTPNguoiThan = tinhList.get(position).getId();
+                posSpinnerThanhPhoNguoiThan = itemTPNguoiThan;
+                getHuyenNguoiThan(itemTPNguoiThan);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        SpinnerQuanNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int itemQuan = huyenList.get(position).getId();
+                posSpinnerQuanNguoiThan = itemQuan;
+                getXaNguoiThan(itemQuan);
+                Log.e("pos", posSpinnerQuanNguoiThan + "");
+            }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -238,87 +222,172 @@ public class AddUserActivity extends AppCompatActivity {
         SpinnerXaNguoiThan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = xaList.get(position).getId();
-                posSpinnerXaNguoiThan = item;
-                Log.e("pos",posSpinnerXaNguoiThan+"");
-
+                int itemXaNguoiThan = xaList.get(position).getId();
+                posSpinnerXa = itemXaNguoiThan;
+                Log.e("pos", posSpinnerXa + "");
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        SpinnerNoiSinhHoat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int item = chuaHoatDongList.get(position).getId();
-                posSpinnerNoiSinhHoat = item;
-                Log.e("pos",posSpinnerNoiSinhHoat+"");
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+
         getSuKien();
         getQuocGia();
-        getTinh();
-        getHuyen();
-        getXa();
         getChuaHoatDong();
-        btnAddUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validate();
-                int gender = idGender;
-                Log.e("idgender",gender+"");
-                String ID = edtID.getText().toString();
-                String hoVaDem = edtHoVaDem.getText().toString();
-                String Ten = edtTenUser.getText().toString();
-                String DiaChi = edtDiaChi.getText().toString();
-                String SoDienThoai = edtSoDienThoai.getText().toString();
-                String PhapDanh = edtPhapDanh.getText().toString();
-                String email = edtEmail.getText().toString();
-                String ngaySinh = edtNgaySinh.getText().toString();
-                String nguoiBaoLanh = edtNguoiBaoLanh.getText().toString();
-                String SDTnguoiBaoLanh = edtSDTNguoiBaoLanh.getText().toString();
-                String NguoiThan = edtTenNguoiThan.getText().toString();
-                String SDTnguoiThan = edtSDTNguoiThan.getText().toString();
-                String DiaChiNguoiThan = edtDiaChiNguoiThan.getText().toString();
-                String CMT = edtCMT.getText().toString();
-                String quocGia = String.valueOf(positionSpinnerQuocGia);
-                String tinh = String.valueOf(posSpinnerThanhPho);
-                String tinhNguoiThan = String.valueOf(posSpinnerThanhPhoNguoiThan);
-                String quan = String.valueOf(posSpinnerQuan);
-                String quanNguoiThan = String.valueOf(posSpinnerQuanNguoiThan);
-                String xa = String.valueOf(posSpinnerXa);
-                String xaNguoiThan = String.valueOf(posSpinnerXaNguoiThan);
-                String chuaHoatDong = String.valueOf(postChuaHoatDong);
-                String sukien = String.valueOf(posSpinnerSuKien);
-                String anh = uriFile;
-                Log.e("dataImage",anh+"");
-                PhatTu phatTu = new PhatTu(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, gender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,anh);
-                Log.e("phatTu", phatTu.toString());
-                list.add(phatTu);
-                AddUser(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, String.valueOf(gender), quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien,anh);
-                Intent i = new Intent(AddUserActivity.this, ListUserActivity.class);
-                Intent intent = getIntent();
-                String token = intent.getStringExtra("token1");
-                i.putExtra("token1", token);
-                startActivity(i);
-                Toast.makeText(AddUserActivity.this, "Phật tử : " + phatTu, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+        //    setUpSpinner();
+        listener();
 
 
     }
 
+//    private void setUpSpinner() {
+//        spinnerSuKien.setOnItemSelectedListener(this);
+//        SpinnerThanhPhoNguoiThan.setOnItemSelectedListener(this);
+//        SpinnerQuocGia.setOnItemSelectedListener(this);
+//        SpinnerThanhPho.setOnItemSelectedListener(this);
+//        SpinnerQuan.setOnItemSelectedListener(this);
+//        SpinnerQuanNguoiThan.setOnItemSelectedListener(this);
+//        SpinnerXa.setOnItemSelectedListener(this);
+//        SpinnerXaNguoiThan.setOnItemSelectedListener(this);
+//        SpinnerNoiSinhHoat.setOnItemSelectedListener(this);
+//    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (view.getId()) {
+            case R.id.SpinnerQuocGia:
+                positionSpinnerQuocGia = quocGiaList.get(position).getIdQuocGia();
+                Log.e("posQuocGia", String.valueOf(positionSpinnerQuocGia));
+                break;
+            case R.id.SpinnerThanhPho:
+                int itemThanhPho = tinhList.get(position).getId();
+                posSpinnerThanhPho = itemThanhPho;
+                getHuyen(posSpinnerThanhPho);
+                Log.e("posTinh", posSpinnerThanhPho + "");
+                break;
+            case R.id.SpinnerQuan:
+                posSpinnerQuan = huyenList.get(position).getId();
+                Log.e("pos", posSpinnerQuan + "");
+                break;
+            case R.id.SpinnerXa:
+                posSpinnerXa = xaList.get(position).getId();
+                Log.e("pos", posSpinnerXa + "");
+                break;
+            case R.id.SpinnerNoiSinhHoat:
+                posSpinnerNoiSinhHoat = chuaHoatDongList.get(position).getId();
+                Log.e("pos", posSpinnerNoiSinhHoat + "");
+                break;
+            case R.id.SpinnerXaNguoiThan:
+                posSpinnerXaNguoiThan = xaList.get(position).getId();
+                Log.e("pos", posSpinnerXaNguoiThan + "");
+                break;
+            case R.id.SpinnerQuanNguoiThan:
+                posSpinnerQuanNguoiThan = huyenList.get(position).getId();
+                Log.e("pos", posSpinnerQuanNguoiThan + "");
+                break;
+            case R.id.SpinnerThanhPhoNguoiThan:
+                posSpinnerThanhPhoNguoiThan = tinhList.get(position).getId();
+                Log.e("pos", posSpinnerThanhPhoNguoiThan + "");
+                break;
+            case R.id.spinnerSuKien:
+                posSpinnerSuKien = chuaHoatDongList.get(position).getId();
+                Log.e("pos", posSpinnerSuKien + "");
+                break;
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private void listener() {
+        imgDate.setOnClickListener(this);
+        btnUploadAvatar.setOnClickListener(this);
+        btnAddUser.setOnClickListener(this);
+    }
+
+    private void addUser() {
+        //validate();
+        ID = edtID.getText().toString();
+        hoVaDem = edtHoVaDem.getText().toString();
+        Ten = edtTenUser.getText().toString();
+        DiaChi = edtDiaChi.getText().toString();
+        SoDienThoai = edtSoDienThoai.getText().toString();
+        PhapDanh = edtPhapDanh.getText().toString();
+        email = edtEmail.getText().toString();
+        ngaySinh = edtNgaySinh.getText().toString();
+        nguoiBaoLanh = edtNguoiBaoLanh.getText().toString();
+        SDTnguoiBaoLanh = edtSDTNguoiBaoLanh.getText().toString();
+        NguoiThan = edtTenNguoiThan.getText().toString();
+        SDTnguoiThan = edtSDTNguoiThan.getText().toString();
+        DiaChiNguoiThan = edtDiaChiNguoiThan.getText().toString();
+        CMT = edtCMT.getText().toString();
+        quocGia = String.valueOf(positionSpinnerQuocGia);
+        tinh = String.valueOf(posSpinnerThanhPho);
+        tinhNguoiThan = String.valueOf(posSpinnerThanhPhoNguoiThan);
+        quan = String.valueOf(posSpinnerQuan);
+        quanNguoiThan = String.valueOf(posSpinnerQuanNguoiThan);
+        xa = String.valueOf(posSpinnerXa);
+        xaNguoiThan = String.valueOf(posSpinnerXaNguoiThan);
+        chuaHoatDong = String.valueOf(postChuaHoatDong);
+        sukien = String.valueOf(posSpinnerSuKien);
+        anh = tvGetContent.getText().toString();
+        ghichu = edtGhiChu.getText().toString();
+        Log.e("idgender", gender + "");
+        Log.e("dataImage", anh + "");
+        PhatTu phatTu = new PhatTu(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, idGender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien, anh);
+        Log.e("phatTu", phatTu.toString());
+        list.add(phatTu);
+        AddUser(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, idGender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien, anh, ghichu);
+        Intent i = new Intent(AddUserActivity.this, ListUserActivity.class);
+        Intent intent = getIntent();
+        String token = intent.getStringExtra("token1");
+        i.putExtra("token1", token);
+        startActivity(i);
+        Toast.makeText(AddUserActivity.this, "Phật tử : " + phatTu, Toast.LENGTH_SHORT).show();
+    }
+
+    private void clickImageDate() {
+        final Calendar c = Calendar.getInstance();
+        int thang, nam, ngay;
+        ngay = c.get(Calendar.DATE);
+        thang = c.get(Calendar.MONTH);
+        nam = c.get(Calendar.YEAR);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(AddUserActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                c.set(year, month, dayOfMonth);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+                edtNgaySinh.setText(simpleDateFormat.format(c.getTime()));
+            }
+        }, nam, thang, ngay);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imgDate:
+                clickImageDate();
+                break;
+            case R.id.btnUploadAvatar:
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                break;
+            case R.id.btnAddUser:
+                addUser();
+                break;
+        }
+    }
+
     private void getChuaHoatDong() {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
-        Log.e("bearer", token + "");
+
         chuaHoatDongList = new ArrayList<>();
         adapterChuaHoatDong = new AdapterChuaHoatDong(chuaHoatDongList, getApplicationContext());
         RetrofitService.getInstance().getChuaHoatDong(token).enqueue(new Callback<ResponseBody>() {
@@ -333,7 +402,7 @@ public class AddUserActivity extends AppCompatActivity {
                             JSONObject object = arrayDulieu.getJSONObject(i);
                             String chua = object.getString("ten");
                             int id = object.getInt("id");
-                            ChuaHoatDong chuaHoatDong = new ChuaHoatDong(chua,id);
+                            ChuaHoatDong chuaHoatDong = new ChuaHoatDong(chua, id);
                             chuaHoatDongList.add(chuaHoatDong);
                             adapterChuaHoatDong.notifyDataSetChanged();
                             ArrayAdapter<ChuaHoatDong> dataAdapter = new ArrayAdapter(getApplication(),
@@ -348,132 +417,128 @@ public class AddUserActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
             }
         });
     }
-    private void getXa() {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
-        xaList = new ArrayList<>();
+
+    private void getXa(int idHuyen) {
         adapterXa = new AdapterXa(xaList, getApplicationContext());
-        RetrofitService.getInstance().getXa(token).enqueue(new Callback<ResponseBody>() {
+        RetrofitService.getInstance().getXatheoIdHuyen(token, idHuyen).enqueue(new Callback<XaResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<XaResponse> call, Response<XaResponse> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        String dulieu = response.body().string();
-                        JSONObject objectDuLieu = new JSONObject(dulieu);
-                        JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
-                        for (int i = 0; i < arrayDulieu.length(); i++) {
-                            JSONObject object = arrayDulieu.getJSONObject(i);
-                            int id = object.getInt("id");
-                            String tenXa = object.getString("ten");
-                            Xa quocGia = new Xa(tenXa,id);
-                            xaList.add(quocGia);
-                            adapterXa.notifyDataSetChanged();
-                            ArrayAdapter<Xa> dataAdapter = new ArrayAdapter(getApplication(),
-                                    android.R.layout.simple_spinner_item, xaList);
-                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            SpinnerXa.setAdapter(dataAdapter);
-                            SpinnerXaNguoiThan.setAdapter(dataAdapter);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    ArrayAdapter<Xa> dataAdapter = new ArrayAdapter(getApplication(), android.R.layout.simple_spinner_item, xaList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    dataAdapter.clear();
+                    xaList.addAll(response.body().xaList);
+                    SpinnerXa.setAdapter(dataAdapter);
+                    dataAdapter.notifyDataSetChanged();
+                    adapterXa.notifyDataSetChanged();
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<XaResponse> call, Throwable t) {
             }
         });
     }
-    private void getHuyen() {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
-        huyenList = new ArrayList<>();
+
+    private void getXaNguoiThan(int idHuyen) {
+        adapterXa = new AdapterXa(xaList, getApplicationContext());
+        RetrofitService.getInstance().getXatheoIdHuyen(token, idHuyen).enqueue(new Callback<XaResponse>() {
+            @Override
+            public void onResponse(Call<XaResponse> call, Response<XaResponse> response) {
+                if (response.isSuccessful()) {
+                    ArrayAdapter<Xa> dataAdapter = new ArrayAdapter(getApplication(), android.R.layout.simple_spinner_item, xaList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    dataAdapter.clear();
+                    xaList.addAll(response.body().xaList);
+                    SpinnerXaNguoiThan.setAdapter(dataAdapter);
+                    dataAdapter.notifyDataSetChanged();
+                    adapterXa.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<XaResponse> call, Throwable t) {
+            }
+        });
+    }
+
+    private void getHuyen(int idTinh) {
         adapterHuyen = new AdapterHuyen(huyenList, getApplicationContext());
-        RetrofitService.getInstance().getHuyen(token).enqueue(new Callback<ResponseBody>() {
+        RetrofitService.getInstance().getHuyentheoIdTinh(token, idTinh).enqueue(new Callback<HuyenResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<HuyenResponse> call, Response<HuyenResponse> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        String dulieu = response.body().string();
-                        JSONObject objectDuLieu = new JSONObject(dulieu);
-                        JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
-                        for (int i = 0; i < arrayDulieu.length(); i++) {
-                            JSONObject object = arrayDulieu.getJSONObject(i);
-                            int id = object.getInt("id");
-                            String tenHuyen = object.getString("ten");
-                            Huyen quocGia = new Huyen(tenHuyen,id);
-                            huyenList.add(quocGia);
-                            adapterHuyen.notifyDataSetChanged();
-                            ArrayAdapter<Huyen> dataAdapter = new ArrayAdapter(getApplication(),
-                                    android.R.layout.simple_spinner_item, huyenList);
-                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            SpinnerQuan.setAdapter(dataAdapter);
-                            SpinnerQuanNguoiThan.setAdapter(dataAdapter);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    ArrayAdapter<Huyen> dataAdapter = new ArrayAdapter(AddUserActivity.this,
+                            android.R.layout.simple_spinner_item, huyenList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    dataAdapter.clear();
+                    huyenList.addAll(response.body().huyenList);
+                    SpinnerQuan.setAdapter(dataAdapter);
+                    dataAdapter.notifyDataSetChanged();
+                    adapterHuyen.notifyDataSetChanged();
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<HuyenResponse> call, Throwable t) {
             }
         });
     }
-    private void getTinh() {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
-        tinhList = new ArrayList<>();
+
+    private void getHuyenNguoiThan(int idTinh) {
+        adapterHuyen = new AdapterHuyen(huyenList, getApplicationContext());
+        RetrofitService.getInstance().getHuyentheoIdTinh(token, idTinh).enqueue(new Callback<HuyenResponse>() {
+            @Override
+            public void onResponse(Call<HuyenResponse> call, Response<HuyenResponse> response) {
+                if (response.isSuccessful()) {
+                    ArrayAdapter<Huyen> dataAdapter = new ArrayAdapter(AddUserActivity.this,
+                            android.R.layout.simple_spinner_item, huyenList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    dataAdapter.clear();
+                    huyenList.addAll(response.body().huyenList);
+                    SpinnerQuanNguoiThan.setAdapter(dataAdapter);
+                    dataAdapter.notifyDataSetChanged();
+                    adapterHuyen.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HuyenResponse> call, Throwable t) {
+            }
+        });
+    }
+
+    private void getTinh(int idQuocGia) {
         adapterTinh = new AdapterTinh(tinhList, getApplicationContext());
-        RetrofitService.getInstance().getTinh(token, 57).enqueue(new Callback<ResponseBody>() {
+        RetrofitService.getInstance().getTinh(token, idQuocGia).enqueue(new Callback<TinhResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<TinhResponse> call, Response<TinhResponse> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        String dulieu = response.body().string();
-                        JSONObject objectDuLieu = new JSONObject(dulieu);
-                        JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
-                        for (int i = 0; i < arrayDulieu.length(); i++) {
-                            JSONObject object = arrayDulieu.getJSONObject(i);
-                            int id = object.getInt("id");
-                            String tenTinh = object.getString("ten");
-                            Tinh quocGia = new Tinh(tenTinh,id);
-                            tinhList.add(quocGia);
-                            adapterTinh.notifyDataSetChanged();
-                            ArrayAdapter<Tinh> dataAdapter = new ArrayAdapter(getApplication(),
-                                    android.R.layout.simple_spinner_item, tinhList);
-                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            SpinnerThanhPho.setAdapter(dataAdapter);
-                            SpinnerThanhPhoNguoiThan.setAdapter(dataAdapter);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    ArrayAdapter<Tinh> dataAdapter = new ArrayAdapter(AddUserActivity.this,
+                            android.R.layout.simple_spinner_item, tinhList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    SpinnerThanhPhoNguoiThan.setAdapter(dataAdapter);
+                    SpinnerThanhPho.setAdapter(dataAdapter);
+                    tinhList.addAll(response.body().listTinh);
+                    dataAdapter.notifyDataSetChanged();
+                    Log.d("abc", tinhList.get(0).getTenQuocGia() + "");
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<TinhResponse> call, Throwable t) {
             }
         });
     }
+
+
     public void getQuocGia() {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
         quocGiaList = new ArrayList<>();
         adapterQuocGia = new AdapterQuocGia(quocGiaList, getApplicationContext());
         RetrofitService.getInstance().getQuocGia(token).enqueue(new Callback<ResponseBody>() {
@@ -486,7 +551,7 @@ public class AddUserActivity extends AppCompatActivity {
                         JSONArray arrayDulieu = objectDuLieu.getJSONArray("data");
                         for (int i = 0; i < arrayDulieu.length(); i++) {
                             JSONObject object = arrayDulieu.getJSONObject(i);
-                             int idQuocGia = object.getInt("id");
+                            int idQuocGia = object.getInt("id");
                             String ten = object.getString("ten");
                             QuocGia quocGia = new QuocGia(ten, idQuocGia);
                             quocGiaList.add(quocGia);
@@ -503,16 +568,15 @@ public class AddUserActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
         });
     }
+
     private void getSuKien() {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
         adapterDuLieuThongKe = new AdapterDuLieuThongKe(duLieuThongKeList, getApplicationContext());
         RetrofitService.getInstance().getDuLieu(token).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -527,7 +591,7 @@ public class AddUserActivity extends AppCompatActivity {
                             JSONObject object = arrayDulieu.getJSONObject(i);
                             int id = object.getInt("id");
                             String tenSuKien = object.getString("ten");
-                            DuLieuThongKe duLieuThongKe = new DuLieuThongKe(tenSuKien,id);
+                            DuLieuThongKe duLieuThongKe = new DuLieuThongKe(tenSuKien, id);
                             duLieuThongKeList.add(duLieuThongKe);
                             adapterDuLieuThongKe.notifyDataSetChanged();
                             ArrayAdapter<DuLieuThongKe> dataAdapter = new ArrayAdapter(getApplication(),
@@ -542,6 +606,7 @@ public class AddUserActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -551,30 +616,27 @@ public class AddUserActivity extends AppCompatActivity {
 
     }
 
-    private void AddUser(final String hoVaDem, final String ten, final String phapDanh, final String diaChi, final String soDienThoai, final String CMT, final String ID, final String email, final String nguoiBaoLanh, final String SDTnguoiBaoLanh, final String nguoiThan, final String SDTnguoiThan, final String diaChiNguoiThan, final String ngaySinh, final String gender, final String quocGia, final String tinh, final String quan, final String xa, final String quanNguoiThan, final String xaNguoiThan, final String tinhNguoiThan, final String chuaHoatDong, final String sukien, String anh) {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
-        Log.e("tokenAddUser", "token : " + token);
+    private void AddUser(final String hoVaDem, final String ten, final String phapDanh, final String diaChi, final String soDienThoai, final String CMT, final String ID, final String email, final String nguoiBaoLanh, final String SDTnguoiBaoLanh, final String nguoiThan, final String SDTnguoiThan, final String diaChiNguoiThan, final String ngaySinh, final int gender, final String quocGia, final String tinh, final String quan, final String xa, final String quanNguoiThan, final String xaNguoiThan, final String tinhNguoiThan, final String chuaHoatDong, final String sukien, String anh, String ghichu) {
         RetrofitService.getInstance().postNewPhatTu(token, ID, "", "",
                 quocGia, hoVaDem, ten, phapDanh, this.gender, ngaySinh, soDienThoai, diaChi, xa,
                 quan, tinh, email, "", nguoiThan, SDTnguoiThan, diaChiNguoiThan, xaNguoiThan,
-                quanNguoiThan, tinhNguoiThan, "", "", "", "",
+                quanNguoiThan, tinhNguoiThan, ghichu, "", "", "",
                 "", "", "", "", nguoiBaoLanh, SDTnguoiBaoLanh,
                 chuaHoatDong, "", CMT, anh, "", "", "", "", "")
                 .enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
 
-                    Log.e("response", String.valueOf(response.body()));
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("loiAddUser", t.getMessage());
-            }
-        });
+                            Log.e("response", String.valueOf(response.body()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e("loiAddUser", t.getMessage());
+                    }
+                });
     }
 
     @Override
@@ -582,10 +644,15 @@ public class AddUserActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK &&
                 data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            uploadFile(uri);
+            uri = data.getData();
+
+            uploadFile(data.getData());
             UserAvatar.setImageURI(uri);
-            tvGetContent.setText(String.valueOf(uri));
+            Log.e("uri", uri + "");
+
+            String content = uri.toString();
+            tvGetContent.setText(content);
+
         }
         if (resultCode == RESULT_OK) {
             try {
@@ -637,7 +704,6 @@ public class AddUserActivity extends AppCompatActivity {
         SpinnerThanhPhoNguoiThan = findViewById(R.id.SpinnerThanhPhoNguoiThan);
     }
 
-
     private void initEdit() {
         edtDiaChi = findViewById(R.id.edtDiaChi);
         edtTenUser = findViewById(R.id.edtTenUser);
@@ -654,47 +720,72 @@ public class AddUserActivity extends AppCompatActivity {
         edtTenNguoiThan = findViewById(R.id.edtTenNguoiThan);
         edtSDTNguoiThan = findViewById(R.id.edtSDTNguoiThan);
         edtDiaChiNguoiThan = findViewById(R.id.edtDiaChiNguoiThan);
+        edtGhiChu = findViewById(R.id.edtGhiChu);
     }
-    public void validate(){
-        if (edtCMT.equals("")){
-            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        else if (edtTenUser.equals("")){
-            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        else if (edtNgaySinh.equals("")){
 
-            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-    }
+//    public void validate() {
+//        if (edtCMT.equals("")) {
+//            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else if (edtTenUser.equals("")) {
+//            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else if (edtNgaySinh.equals("")) {
+//
+//            Toast.makeText(this, "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//    }
 
     private void uploadFile(Uri fileUri) {
-        Intent i = getIntent();
-        String data = i.getStringExtra("token1");
-        String token = "Bearer " + data;
         File orifile = FileUtils.getFile(getApplicationContext(), fileUri);
-        Log.e("urifile",orifile.getName()+"");
-        Log.e("urifile",orifile.toString()+"");
-        Log.e("urifile",orifile.toURI().toString()+"");
-        uriFile = orifile.getName();
+        RequestBody status = RequestBody.create(MediaType.parse("text/plain"), "");
+        RequestBody message = RequestBody.create(MediaType.parse("text/plain"), "");
         RequestBody filePart = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), orifile);
         MultipartBody.Part file = MultipartBody.Part.createFormData("data", orifile.getName(), filePart);
-        RetrofitService.getInstance().uploadImage(token, "", "", file).enqueue(new Callback<ResponseBody>() {
+        RetrofitService.getInstance().uploadImage(token, status, message, file).enqueue(new Callback<ImageResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code()==200){
+            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                if (response.code() == 200) {
                     Toast.makeText(AddUserActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    String dataImage = response.body().data;
+                    Log.e("response", dataImage + "");
+                    Toast.makeText(AddUserActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ImageResponse> call, Throwable t) {
+                Toast.makeText(AddUserActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
 
             }
         });
 
     }
+
+    private void uploadImageToSever(String filePath) {
+
+        File file = new File(filePath);
+        RequestBody fileRequest = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileRequest);
+        RequestBody message = RequestBody.create(MediaType.parse("text/plain"), "message");
+        RequestBody status = RequestBody.create(MediaType.parse("text/plain"), "status");
+        RetrofitService.getInstance().uploadImage(token, status, message, part).enqueue(new Callback<ImageResponse>() {
+            @Override
+            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                if (response.isSuccessful()) {
+                    Log.e("imgData", response.body().data + "");
+                    Toast.makeText(AddUserActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageResponse> call, Throwable t) {
+                Toast.makeText(AddUserActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
 }

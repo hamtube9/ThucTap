@@ -21,12 +21,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edtUserName, edtPassword;
     private Button btnLogin, btnGotoRegister;
     private ImageView btnshow;
     boolean check;
-
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String token;
@@ -36,22 +35,58 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
-        showPassword();
         restoringPreferences();
         edtUserName.setText(sharedPreferences.getString("username", ""));
         edtPassword.setText(sharedPreferences.getString("password", ""));
+    }
 
+    public void restoringPreferences() {
+        sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
+        edtPassword.setText(password);
+        edtUserName.setText(username);
+    }
 
+    private void initView() {
+        edtPassword = findViewById(R.id.edtPassword);
+        edtUserName = findViewById(R.id.edtUserName);
+        btnshow = findViewById(R.id.btnShow);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(this);
+        btnshow.setOnClickListener(this);
+    }
 
-
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+    public void getToken() {
+        RetrofitService.getInstance().getToken("password", "admin", edtPassword.getText().toString()).enqueue(new Callback<Token>() {
             @Override
-            public void onClick(View view) {
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                if (response.isSuccessful()) {
+                    response.body();
+                    sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
+                    editor = sharedPreferences.edit();
+                    editor.putString("username", response.body().getUserName());
+                    token = String.valueOf(editor.putString("token", "" + response.body().getAccessToken()));
+                    editor.commit();
+                    Log.e("token", "" + token);
+                    Log.e("username", "" + response.body().getUserName());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Token> call, Throwable t) {
+                Log.e("err", t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnLogin:
                 String username = edtUserName.getText().toString();
                 String password = edtPassword.getText().toString();
-
-
                 if ((username.isEmpty()) || (password.isEmpty())) {
                     Toast.makeText(LoginActivity.this, "Hãy điền đầy đủ username và password", Toast.LENGTH_SHORT).show();
                     return;
@@ -60,24 +95,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     getToken();
-                   sharedPreferences = getSharedPreferences("APIVanLang",MODE_PRIVATE);
-                   editor = sharedPreferences.edit();
-                   editor.putString("username",edtUserName.getText().toString());
-                   editor.putString("password",edtPassword.getText().toString());
-
+                    sharedPreferences = getSharedPreferences("APIVanLang", MODE_PRIVATE);
+                    editor = sharedPreferences.edit();
+                    editor.putString("username", edtUserName.getText().toString());
+                    editor.putString("password", edtPassword.getText().toString());
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-
                     startActivity(intent);
                 }
-            }
-        });
-    }
+                break;
 
-
-    private void showPassword() {
-        btnshow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            case R.id.btnShow:
                 if (check == false) {
                     check = true;
                     btnshow.setImageResource(R.drawable.eye);
@@ -87,56 +114,6 @@ public class LoginActivity extends AppCompatActivity {
                     edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     check = false;
                 }
-            }
-        });
-    }
-
-
-
-
-    public void restoringPreferences() {
-        sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
-
-        String username = sharedPreferences.getString("username", "");
-        String password = sharedPreferences.getString("password", "");
-        edtPassword.setText(password);
-        edtUserName.setText(username);
-    }
-
-
-    private void initView() {
-        edtPassword = findViewById(R.id.edtPassword);
-        edtUserName = findViewById(R.id.edtUserName);
-        btnshow = findViewById(R.id.btnShow);
-        btnLogin = findViewById(R.id.btnLogin);
-
-
-    }
-
-
-    public void getToken() {
-        RetrofitService.getInstance().getToken("password","admin",edtPassword.getText().toString()).enqueue(new Callback<Token>() {
-            @Override
-            public void onResponse(Call<Token> call, Response<Token> response) {
-            if (response.isSuccessful())
-            {
-                response.body();
-
-                sharedPreferences = getSharedPreferences("apiVanLang", MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putString("username", response.body().getUserName());
-                token = String.valueOf(editor.putString("token",""+response.body().getAccessToken()));
-                editor.commit();
-                Log.e("token",""+token);
-                Log.e("username",""+response.body().getUserName());
-            }
-
-            }
-
-            @Override
-            public void onFailure(Call<Token> call, Throwable t) {
-                Log.e("err",t.getMessage());
-            }
-        });
+        }
     }
 }

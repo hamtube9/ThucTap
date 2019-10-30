@@ -33,7 +33,7 @@ public class AdapterTinh extends RecyclerView.Adapter<AdapterTinh.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvTinh.setText(list.get(position).getTenTinh());
+        holder.tvTinh.setText(list.get(position).getTen());
         holder.idTinh.setText(list.get(position).getId());
     }
 

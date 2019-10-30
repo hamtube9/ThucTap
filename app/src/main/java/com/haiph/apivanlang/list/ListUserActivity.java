@@ -41,21 +41,34 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListUserActivity extends AppCompatActivity {
-    RecyclerView rcView;
-    ListUserAdapter adapter;
-    Toolbar toolbar;
-    ArrayList<PhatTu> list = new ArrayList<>();
-    PhatTu phatTu;
-    // String token = "Bearer KpWPsSPjIfNNbG60isArijFmcZclhPuvQa9LlUOYl2hdOLnKP10goRYW4Pgw5gXnIqiiJTyI_WSPI_4ZdKvulDjhMdaG9B0E_UmDDs2O4Jim3jvTr2nMIkPpk03jlWIzPqTuu_OXs5MiU3Q-qH_UtTROMfLEGc05gmnN8wjQg3cndDwx3Z9I2keatx8gHtzzj59d6Fx8FFXfRLDGvBmRvGniSmvwAmgKzr89L-Bd61GwH0oow4_cUGU8-W-PThF0zvfAvQocjJmNm-nZO71_R5c3Kket2bPKP9JqP6ehlmU-YAo2dzu8VRdbwJsKBRLekGY4-GZa0OxdXxGyVT3GEtuHTwlMKs3NQB-4j9-jcbZuLQS-s7d_Tq4qCJEZD95_p8QU4GiK5ld9mFszVjvm-zHUlcbjuQaizKM6eZbMXSIvhZJO2Jk0zvbFvKk86P75L45HeTMCt6BNcIAChTqgzJxjG5dNHYi3a0yRAAan4UmBvLDJnYUWSiEZdlCVCPYjVXm3h7zdiacL_CZp66xJK2vbGMsWv5kE-3P57iCW_44";
-    Service service;
+    private RecyclerView rcView;
+    private ListUserAdapter adapter;
+    private Toolbar toolbar;
+    private ArrayList<PhatTu> list = new ArrayList<>();
+    private PhatTu phatTu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_user);
+        initView();
+        getUser();
+
+    }
+
+    private void initView() {
         toolbar = findViewById(R.id.toolbarList);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        rcView = findViewById(R.id.rcView);
+        rcView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        onClick();
+        rcView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
+    }
+
+    private void onClick() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,9 +76,6 @@ public class ListUserActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        rcView = findViewById(R.id.rcView);
-        rcView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new ListUserAdapter(list, getApplicationContext(), new ListUserAdapter.ItemOnclick() {
             @Override
             public void setOnclickItemSelect(final int position) {
@@ -95,12 +105,7 @@ public class ListUserActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-        rcView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        getUser();
-
     }
-
 
 
     private void getUser() {
@@ -108,69 +113,42 @@ public class ListUserActivity extends AppCompatActivity {
         String token = i.getStringExtra("token1");
         final String tokenList = "Bearer " + token;
         Log.e("logToken", "" + tokenList);
-//
-//        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-//            @Override
-//            public okhttp3.Response intercept(Chain chain) throws IOException {
-//                Request newRequest = chain.request().newBuilder()
-//                        .addHeader("Authorization", tokenList)
-//                        .build();
-//                return chain.proceed(newRequest);
-//            }
-//        }).build();
-//
-//        Retrofit.Builder buider = new Retrofit.Builder()
-//                .baseUrl("http://api.testqlpt.vla.vn")
-//                .client(client)
-//                .addConverterFactory(GsonConverterFactory.create());
-//
-//        Retrofit retrofit = buider.build();
-//
-//        service = retrofit.create(Service.class);
-
-            RetrofitService.getInstance().getFromDateToDate(tokenList,"2019-08-01","2019-10-30").enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()){
-
-                        try {
-                            String data = response.body().string();
-                            JSONObject j = new JSONObject(data);
-                            //      Log.e("data", j + "");
-                            JSONArray array = j.getJSONArray("data");
-                            //    Log.e("array",array+"");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject object = array.getJSONObject(i);
-                                String name = object.getString("hoVaTen");
-                                String id = object.getString("id");
-                                String diachi = object.getString("diaChi");
-                                String dienthoai = object.getString("soDienThoai");
-                                String cmt = object.getString("socmtnd");
-                                String phapdanh = object.getString("phapDanh");
-                                String anh = object.getString("linkAnhDaiDien");
-                                Log.e("anhdaidien",anh+"");
-                             //   Log.e("nameOb", "name : " + name + "/n id " + id + "/n địa chỉ : " + diachi + "/n điện thoại " + dienthoai+" /n ảnh :"+anh);
-                                phatTu = new PhatTu(name, phapdanh, diachi, dienthoai, cmt, id,anh);
-
-                                list.add(phatTu);
-
-                            }
-
-                            adapter.notifyDataSetChanged();
-
-                        } catch (Exception e) {
-                            Log.e("exception", e + "");
+        RetrofitService.getInstance().getFromDateToDate(tokenList, "2019-08-01", "2019-10-30").enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String data = response.body().string();
+                        JSONObject j = new JSONObject(data);
+                        //      Log.e("data", j + "");
+                        JSONArray array = j.getJSONArray("data");
+                        //    Log.e("array",array+"");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            String name = object.getString("hoVaTen");
+                            String id = object.getString("id");
+                            String diachi = object.getString("diaChi");
+                            String dienthoai = object.getString("soDienThoai");
+                            String cmt = object.getString("socmtnd");
+                            String phapdanh = object.getString("phapDanh");
+                            String anh = object.getString("linkAnhDaiDien");
+                            Log.e("anhdaidien", anh + "");
+                            //   Log.e("nameOb", "name : " + name + "/n id " + id + "/n địa chỉ : " + diachi + "/n điện thoại " + dienthoai+" /n ảnh :"+anh);
+                            phatTu = new PhatTu(name, phapdanh, diachi, dienthoai, cmt, id, anh);
+                            list.add(phatTu);
                         }
-
-
+                        adapter.notifyDataSetChanged();
+                    } catch (Exception e) {
+                        Log.e("exception", e + "");
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                }
-            });
+            }
+        });
 
 
     }
@@ -179,13 +157,14 @@ public class ListUserActivity extends AppCompatActivity {
     private void deleteUser(String idPhatTu) {
         Intent i = getIntent();
         String data = i.getStringExtra("token1");
-        String token = "Bearer "+ data;
-        Log.e("delete",""+token);
+        String token = "Bearer " + data;
+        Log.e("delete", "" + token);
         RetrofitService.getInstance().deletePhatTu(token, idPhatTu).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     list.remove(response.body());
+                    adapter.notifyDataSetChanged();
 
                 }
 

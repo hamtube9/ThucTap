@@ -1,7 +1,10 @@
 package com.haiph.apivanlang.Service;
 
 import com.haiph.apivanlang.model.Token;
+import com.haiph.apivanlang.response.HuyenResponse;
 import com.haiph.apivanlang.response.ImageResponse;
+import com.haiph.apivanlang.response.TinhResponse;
+import com.haiph.apivanlang.response.XaResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -30,7 +33,7 @@ public interface Service {
 
 
     @FormUrlEncoded
-    @POST("token")
+    @POST("/token")
     Call<Token> getToken(
             @Field("grant_type") String grantType,
             @Field("username") String userName,
@@ -51,8 +54,19 @@ public interface Service {
     Call<ResponseBody> getXa(@Header("Authorization") String Authorization);
 
 
-    @GET("/api/danh-muc/danh-muc-huyen")
-    Call<ResponseBody> getHuyen(@Header("Authorization") String Authorization);
+
+    //api/danh-muc/danh-sach-tinh-theo-quoc-gia/{idQuocGia}
+
+
+    //api/danh-muc/danh-sach-huyen-theo-tinh/{idTinh}
+    @GET("/api/danh-muc/danh-sach-huyen-theo-tinh/{idTinh}")
+    Call<HuyenResponse> getHuyentheoIdTinh(@Header("Authorization") String Authorization,
+                                           @Path("idTinh") int idTinh);
+
+    // api/danh-muc/danh-sach-xa-theo-huyen/{idHuyen}
+    @GET("/api/danh-muc/danh-sach-xa-theo-huyen/{idHuyen}")
+    Call<XaResponse> getXatheoIdHuyen(@Header("Authorization") String Authorization,
+                                      @Path("idHuyen") int idHuyen );
 
 
 
@@ -61,22 +75,24 @@ public interface Service {
 
 
     @GET("/api/danh-muc/danh-sach-tinh-theo-quoc-gia/{idQuocGia}")
-    Call<ResponseBody> getTinh(@Header("Authorization") String Authorization,
+    Call<TinhResponse> getTinh(@Header("Authorization") String Authorization,
                                @Path("idQuocGia") int idQuocGia);
 
+    @GET("/api/danh-muc/danh-sach-tinh-theo-quoc-gia")
+    Call<TinhResponse> getAllTinh(@Header("Authorization") String Authorization);
 
 
 
 
     @Multipart
-    @POST("api/anh/upload-anh")
-    Call<ResponseBody> uploadImage(@Header("Authorization") String Authorization,
-                                   @Part("Status") String status,
-                                   @Part("Message") String message,
+    @POST("/api/file/PostAvatarAsync")
+    Call<ImageResponse> uploadImage(@Header("Authorization") String Authorization,
+                                   @Part("Status") RequestBody status,
+                                   @Part("Message") RequestBody message,
                                    @Part MultipartBody.Part data);
 
     @FormUrlEncoded
-    @POST("api/phat-tu/them-moi")
+    @POST("/api/phat-tu/them-moi")
     Call<ResponseBody> postNewPhatTu(@Header("Authorization") String Authorization,
                                      @Field("ID") String id,
                                      @Field("AnhDaiDien") String anhDaiDien,

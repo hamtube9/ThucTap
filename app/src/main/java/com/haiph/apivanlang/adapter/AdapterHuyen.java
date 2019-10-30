@@ -32,7 +32,7 @@ public class AdapterHuyen extends RecyclerView.Adapter<AdapterHuyen.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tenHuyen.setText(list.get(position).getTenHuyen());
+        holder.tenHuyen.setText(list.get(position).getTen());
         holder.idhuyen.setText(list.get(position).getId());
     }
 
