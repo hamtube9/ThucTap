@@ -78,7 +78,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddUserActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class AddUserActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
     final int PICK_IMAGE_REQUEST = 1;
     private TextView tvSuKien, tvGetContent;
@@ -106,12 +106,11 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
     private List<PhatTu> list = new ArrayList<>();
     private String gender;
     int positionSpinnerQuocGia, posSpinnerXa, posSpinnerXaNguoiThan, posSpinnerQuan, posSpinnerQuanNguoiThan, posSpinnerSuKien, postChuaHoatDong, posSpinnerNoiSinhHoat, posSpinnerThanhPho, posSpinnerThanhPhoNguoiThan;
-    private String uriFile;
     int idGender;
     private Uri uri;
-    String ID, hoVaDem, Ten, DiaChi, SoDienThoai, PhapDanh, email, ngaySinh, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, CMT, quocGia;
-    String tinh, tinhNguoiThan, quan, quanNguoiThan, xa, xaNguoiThan, chuaHoatDong, sukien, anh, ghichu;
-    String token;
+    private String ID, hoVaDem, Ten, DiaChi, SoDienThoai, PhapDanh, email, ngaySinh, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, CMT, quocGia;
+    private String tinh, tinhNguoiThan, quan, quanNguoiThan, xa, xaNguoiThan, chuaHoatDong, sukien, anh, ghichu;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +158,6 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
                 int itemTinh = tinhList.get(position).getId();
                 posSpinnerThanhPho = itemTinh;
                 getHuyen(itemTinh);
-
                 Log.e("posThanhPho", itemTinh + "");
 
             }
@@ -232,13 +230,11 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-
-        getSuKien();
-        getQuocGia();
-        getChuaHoatDong();
-        //    setUpSpinner();
+        // setUpSpinner();
         listener();
-
+        getSuKien();
+        getChuaHoatDong();
+        getQuocGia();
 
     }
 
@@ -253,56 +249,67 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
 //        SpinnerXaNguoiThan.setOnItemSelectedListener(this);
 //        SpinnerNoiSinhHoat.setOnItemSelectedListener(this);
 //    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (view.getId()) {
-            case R.id.SpinnerQuocGia:
-                positionSpinnerQuocGia = quocGiaList.get(position).getIdQuocGia();
-                Log.e("posQuocGia", String.valueOf(positionSpinnerQuocGia));
-                break;
-            case R.id.SpinnerThanhPho:
-                int itemThanhPho = tinhList.get(position).getId();
-                posSpinnerThanhPho = itemThanhPho;
-                getHuyen(posSpinnerThanhPho);
-                Log.e("posTinh", posSpinnerThanhPho + "");
-                break;
-            case R.id.SpinnerQuan:
-                posSpinnerQuan = huyenList.get(position).getId();
-                Log.e("pos", posSpinnerQuan + "");
-                break;
-            case R.id.SpinnerXa:
-                posSpinnerXa = xaList.get(position).getId();
-                Log.e("pos", posSpinnerXa + "");
-                break;
-            case R.id.SpinnerNoiSinhHoat:
-                posSpinnerNoiSinhHoat = chuaHoatDongList.get(position).getId();
-                Log.e("pos", posSpinnerNoiSinhHoat + "");
-                break;
-            case R.id.SpinnerXaNguoiThan:
-                posSpinnerXaNguoiThan = xaList.get(position).getId();
-                Log.e("pos", posSpinnerXaNguoiThan + "");
-                break;
-            case R.id.SpinnerQuanNguoiThan:
-                posSpinnerQuanNguoiThan = huyenList.get(position).getId();
-                Log.e("pos", posSpinnerQuanNguoiThan + "");
-                break;
-            case R.id.SpinnerThanhPhoNguoiThan:
-                posSpinnerThanhPhoNguoiThan = tinhList.get(position).getId();
-                Log.e("pos", posSpinnerThanhPhoNguoiThan + "");
-                break;
-            case R.id.spinnerSuKien:
-                posSpinnerSuKien = chuaHoatDongList.get(position).getId();
-                Log.e("pos", posSpinnerSuKien + "");
-                break;
-
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+//
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        switch (view.getId()) {
+//            case R.id.SpinnerQuocGia:
+//                int idItemQuocGia = quocGiaList.get(position).getIdQuocGia();
+//                positionSpinnerQuocGia = idItemQuocGia;
+//                getTinh(idItemQuocGia);
+//                Log.e("idItemQuocGia", idItemQuocGia + "");
+//                break;
+//            case R.id.SpinnerThanhPho:
+//                int itemTinh = tinhList.get(position).getId();
+//                posSpinnerThanhPho = itemTinh;
+//                getHuyen(itemTinh);
+//                Log.e("posThanhPho", itemTinh + "");
+//                break;
+//            case R.id.SpinnerQuan:
+//                int itemQuan = huyenList.get(position).getId();
+//                posSpinnerQuan = itemQuan;
+//                getXa(itemQuan);
+//                Log.e("pos", posSpinnerQuan + "");
+//                break;
+//            case R.id.SpinnerXa:
+//                int itemXa = xaList.get(position).getId();
+//                posSpinnerXa = itemXa;
+//                Log.e("pos", posSpinnerXa + "");
+//                break;
+//            case R.id.SpinnerThanhPhoNguoiThan:
+//                int itemTPNguoiThan = tinhList.get(position).getId();
+//                posSpinnerThanhPhoNguoiThan = itemTPNguoiThan;
+//                getHuyenNguoiThan(itemTPNguoiThan);
+//                break;
+//            case R.id.SpinnerQuanNguoiThan:
+//                int itemQuanNguoiThan = huyenList.get(position).getId();
+//                posSpinnerQuanNguoiThan = itemQuanNguoiThan;
+//                getXaNguoiThan(itemQuanNguoiThan);
+//                Log.e("pos", posSpinnerQuanNguoiThan + "");
+//                break;
+//
+//            case R.id.SpinnerXaNguoiThan:
+//                int itemXaNguoiThan = xaList.get(position).getId();
+//                posSpinnerXa = itemXaNguoiThan;
+//                Log.e("pos", posSpinnerXa + "");
+//                break;
+//            case R.id.SpinnerNoiSinhHoat:
+//                posSpinnerNoiSinhHoat = chuaHoatDongList.get(position).getId();
+//                Log.e("pos", posSpinnerNoiSinhHoat + "");
+//                break;
+//
+//            case R.id.spinnerSuKien:
+//                posSpinnerSuKien = chuaHoatDongList.get(position).getId();
+//                Log.e("pos", posSpinnerSuKien + "");
+//                break;
+//
+//        }
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//
+//    }
 
     private void listener() {
         imgDate.setOnClickListener(this);
@@ -339,7 +346,7 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
         ghichu = edtGhiChu.getText().toString();
         Log.e("idgender", gender + "");
         Log.e("dataImage", anh + "");
-        PhatTu phatTu = new PhatTu(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, idGender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien, anh);
+        PhatTu phatTu = new PhatTu(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, idGender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien, anh,ghichu);
         Log.e("phatTu", phatTu.toString());
         list.add(phatTu);
         AddUser(hoVaDem, Ten, PhapDanh, DiaChi, SoDienThoai, CMT, ID, email, nguoiBaoLanh, SDTnguoiBaoLanh, NguoiThan, SDTnguoiThan, DiaChiNguoiThan, ngaySinh, idGender, quocGia, tinh, quan, xa, quanNguoiThan, xaNguoiThan, tinhNguoiThan, chuaHoatDong, sukien, anh, ghichu);
@@ -527,6 +534,7 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
                     SpinnerThanhPho.setAdapter(dataAdapter);
                     tinhList.addAll(response.body().listTinh);
                     dataAdapter.notifyDataSetChanged();
+                    adapterTinh.notifyDataSetChanged();
                     Log.d("abc", tinhList.get(0).getTenQuocGia() + "");
                 }
             }
@@ -618,7 +626,7 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
 
     private void AddUser(final String hoVaDem, final String ten, final String phapDanh, final String diaChi, final String soDienThoai, final String CMT, final String ID, final String email, final String nguoiBaoLanh, final String SDTnguoiBaoLanh, final String nguoiThan, final String SDTnguoiThan, final String diaChiNguoiThan, final String ngaySinh, final int gender, final String quocGia, final String tinh, final String quan, final String xa, final String quanNguoiThan, final String xaNguoiThan, final String tinhNguoiThan, final String chuaHoatDong, final String sukien, String anh, String ghichu) {
         RetrofitService.getInstance().postNewPhatTu(token, ID, "", "",
-                quocGia, hoVaDem, ten, phapDanh, this.gender, ngaySinh, soDienThoai, diaChi, xa,
+                quocGia, hoVaDem, ten, phapDanh,gender, ngaySinh, soDienThoai, diaChi, xa,
                 quan, tinh, email, "", nguoiThan, SDTnguoiThan, diaChiNguoiThan, xaNguoiThan,
                 quanNguoiThan, tinhNguoiThan, ghichu, "", "", "",
                 "", "", "", "", nguoiBaoLanh, SDTnguoiBaoLanh,
@@ -747,7 +755,6 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
                 if (response.code() == 200) {
-                    Toast.makeText(AddUserActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     String dataImage = response.body().data;
                     Log.e("response", dataImage + "");
                     Toast.makeText(AddUserActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
@@ -763,29 +770,7 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void uploadImageToSever(String filePath) {
 
-        File file = new File(filePath);
-        RequestBody fileRequest = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileRequest);
-        RequestBody message = RequestBody.create(MediaType.parse("text/plain"), "message");
-        RequestBody status = RequestBody.create(MediaType.parse("text/plain"), "status");
-        RetrofitService.getInstance().uploadImage(token, status, message, part).enqueue(new Callback<ImageResponse>() {
-            @Override
-            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
-                if (response.isSuccessful()) {
-                    Log.e("imgData", response.body().data + "");
-                    Toast.makeText(AddUserActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ImageResponse> call, Throwable t) {
-                Toast.makeText(AddUserActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
 
 
 }

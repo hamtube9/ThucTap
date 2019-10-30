@@ -26,6 +26,15 @@ public class PhatTu {
     String ChuaHoatDong;
     String SuKien;
     String anh;
+    String ghichu;
+
+    public String getGhichu() {
+        return ghichu;
+    }
+
+    public void setGhichu(String ghichu) {
+        this.ghichu = ghichu;
+    }
 
     public String getAnh() {
         return anh;
@@ -35,7 +44,7 @@ public class PhatTu {
         this.anh = anh;
     }
 
-    public PhatTu(String hoVaDem, String name, String phapDanh, String diachi, String dienthoai, String CMT, String id, String email, String nguoiBaoLanh, String SDTNguoiBaoLanh, String nguoiThan, String SDTNguoiThan, String diaChiNguoiThan, String ngaySinh, int gender, String quocGia, String tinh, String quan, String xa, String quanNguoiThan, String xaNguoiThan, String tinhNguoiThan, String chuaHoatDong, String suKien, String anh) {
+    public PhatTu(String hoVaDem, String name, String phapDanh, String diachi, String dienthoai, String CMT, String id, String email, String nguoiBaoLanh, String SDTNguoiBaoLanh, String nguoiThan, String SDTNguoiThan, String diaChiNguoiThan, String ngaySinh, int gender, String quocGia, String tinh, String quan, String xa, String quanNguoiThan, String xaNguoiThan, String tinhNguoiThan, String chuaHoatDong, String suKien, String anh, String ghichu) {
         this.HoVaDem = hoVaDem;
         this.name = name;
         this.phapDanh = phapDanh;
@@ -61,6 +70,7 @@ public class PhatTu {
         this.ChuaHoatDong = chuaHoatDong;
         this.SuKien = suKien;
         this.anh = anh;
+        this.ghichu=ghichu;
     }
 
     public String getTinhNguoiThan() {

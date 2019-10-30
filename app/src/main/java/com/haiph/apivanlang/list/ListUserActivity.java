@@ -53,6 +53,7 @@ public class ListUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_user);
         initView();
         getUser();
+        adapter.notifyDataSetChanged();
 
     }
 

@@ -101,7 +101,7 @@ public interface Service {
                                      @Field("Ho") String ho,
                                      @Field("Ten") String ten,
                                      @Field("PhapDanh") String phapDanh,
-                                     @Field("GioiTinh") String gioiTinh,
+                                     @Field("GioiTinh") int gioiTinh,
                                      @Field("NgaySinh") String ngaySinh,
                                      @Field("SoDienThoai") String soDienThoai,
                                      @Field("SoNha") String soNha,
